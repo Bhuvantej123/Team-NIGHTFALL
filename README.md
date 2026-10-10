@@ -21,23 +21,39 @@ Built for a 24-hour hackathon by **Team NIGHTFALL**.
 ## Tech Stack
 
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS v3
-- **Backend:** Python 3.11+ + Flask + SQLAlchemy + SQLite
+- **Backend:** Python 3.11+ + Flask + SQLAlchemy + Supabase PostgreSQL (or SQLite fallback)
 - **AI:** Google Gemini via `google-genai` SDK (deterministic mock available)
 
 ---
 
 ## Quick Start (Windows PowerShell)
 
-### 1 — Clone and configure
+### 1 — Clone and configure environment
 
 ```powershell
 git clone https://github.com/Bhuvantej123/Team-NIGHTFALL.git
 cd Team-NIGHTFALL
 Copy-Item .env.example .env
-# Edit .env — set GEMINI_API_KEY and GEMINI_MODEL (see step 2)
+# Edit .env — set DATABASE_URL (Supabase PostgreSQL), GEMINI_API_KEY, and GEMINI_MODEL
 ```
 
-### 2 — Discover your Gemini model name
+### 2 — Configure Supabase PostgreSQL (or SQLite fallback)
+
+1. Obtain your PostgreSQL connection string from the Supabase Dashboard:
+   - **Supabase Dashboard** → **Project Settings** → **Database** → **Connection string** → **URI**.
+   - Example (Transaction Pooler):
+     `DATABASE_URL=postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres`
+2. Set `DATABASE_URL` in your `.env` file. (If omitted, the app defaults to local SQLite).
+3. Initialize the schema tables on Supabase:
+   ```powershell
+   python backend/scripts/init_supabase_db.py
+   ```
+4. Seed demo creators into the database:
+   ```powershell
+   python backend/seed/seed.py --use-temp
+   ```
+
+### 3 — Discover your Gemini model name
 
 ```powershell
 cd backend
@@ -51,18 +67,17 @@ python backend/scripts/list_gemini_models.py
 # Leave GEMINI_MODEL empty to run in mock mode — the app still works.
 ```
 
-### 3 — Seed the database and start the backend
+### 4 — Start the backend server
 
 ```powershell
 # From project root, venv active
-python backend/seed/seed.py
 $env:FLASK_APP = "backend/app.py"
 $env:FLASK_ENV  = "development"
 flask run --port 5000
-# Backend: http://localhost:5000/api/health
+# Backend health endpoint: http://localhost:5000/api/health
 ```
 
-### 4 — Start the frontend (separate terminal)
+### 5 — Start the frontend (separate terminal)
 
 ```powershell
 cd frontend

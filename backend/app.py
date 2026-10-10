@@ -70,13 +70,17 @@ def create_app(config_object: type = Config) -> Flask:
     from backend.routes.health_routes import health_bp
     app.register_blueprint(health_bp, url_prefix="/api")
 
-    # Phase 1 blueprints (registered here when implemented)
-    # from backend.routes.creator_routes import creator_bp
-    # app.register_blueprint(creator_bp, url_prefix="/api")
-    # from backend.routes.campaign_routes import campaign_bp
-    # app.register_blueprint(campaign_bp, url_prefix="/api")
-    # from backend.routes.match_routes import match_bp
-    # app.register_blueprint(match_bp, url_prefix="/api")
+    # Phase 1 blueprints
+    from backend.routes.creator_routes import creator_bp
+    app.register_blueprint(creator_bp, url_prefix="/api")
+
+    # Phase 2 blueprints
+    from backend.routes.campaign_routes import campaign_bp
+    app.register_blueprint(campaign_bp, url_prefix="/api")
+
+    # Phase 3 blueprints
+    from backend.routes.match_routes import match_bp
+    app.register_blueprint(match_bp, url_prefix="/api")
 
     logger.info("CreatorConnect AI backend started.")
     return app
