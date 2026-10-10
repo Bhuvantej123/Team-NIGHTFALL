@@ -1,0 +1,44 @@
+# ── Environment ───────────────────────────────────────────────────────────────
+# NEVER commit .env — it contains API keys
+.env
+
+# ── Python ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+*.coverage
+htmlcov/
+
+# ── SQLite runtime files ───────────────────────────────────────────────────────
+# Do NOT ignore seed source files (backend/seed/creators.json)
+backend/instance/*.db
+backend/instance/*.db-journal
+backend/instance/*.db-shm
+backend/instance/*.db-wal
+
+# ── Node ───────────────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── IDE ────────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+
+# ── OS ─────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

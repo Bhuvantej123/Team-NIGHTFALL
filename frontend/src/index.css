@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-900 text-white font-sans antialiased;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Glassmorphism card */
+  .glass-card {
+    @apply bg-surface-800 border border-surface-600 rounded-2xl;
+    backdrop-filter: blur(12px);
+    background: rgba(26, 26, 62, 0.7);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           text-white transition-all duration-200 ease-out
+           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-surface-900;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    transform: none;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           text-brand-300 border border-brand-600 bg-transparent
+           transition-all duration-200 ease-out
+           hover:bg-brand-600/20 hover:border-brand-400
+           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-surface-900;
+  }
+
+  /* Section heading gradient */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #a5b8fc, #a78bfa);
+  }
+
+  /* Status badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-success  { @apply badge bg-emerald-500/20 text-emerald-300 border border-emerald-500/30; }
+  .badge-warning  { @apply badge bg-amber-500/20 text-amber-300 border border-amber-500/30; }
+  .badge-danger   { @apply badge bg-red-500/20 text-red-300 border border-red-500/30; }
+  .badge-info     { @apply badge bg-brand-500/20 text-brand-300 border border-brand-500/30; }
+  .badge-neutral  { @apply badge bg-surface-700 text-slate-300 border border-surface-600; }
+}
