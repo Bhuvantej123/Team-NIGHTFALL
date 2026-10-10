@@ -82,6 +82,10 @@ def create_app(config_object: type = Config) -> Flask:
     from backend.routes.match_routes import match_bp
     app.register_blueprint(match_bp, url_prefix="/api")
 
+    # Phase 4 blueprints
+    from backend.routes.shortlist_routes import shortlist_bp
+    app.register_blueprint(shortlist_bp, url_prefix="/api")
+
     logger.info("CreatorConnect AI backend started.")
     return app
 

@@ -9,9 +9,23 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env from the project root (two levels up from this file: backend/ -> root)
-_ROOT = Path(__file__).resolve().parent.parent
-load_dotenv(_ROOT / ".env")
+# Resolve directories and env paths
+_BACKEND_DIR = Path(__file__).resolve().parent
+_ROOT = _BACKEND_DIR.parent
+_BACKEND_ENV = _BACKEND_DIR / ".env"
+_ROOT_ENV = _ROOT / ".env"
+
+# Load environment files:
+# 1. backend/.env (canonical location for real local environment)
+# 2. root .env (fallback)
+def load_environment() -> None:
+    """Loads environment variables from backend/.env and project root .env."""
+    if _BACKEND_ENV.exists():
+        load_dotenv(_BACKEND_ENV)
+    if _ROOT_ENV.exists():
+        load_dotenv(_ROOT_ENV)
+
+load_environment()
 
 # ── Resolved paths ─────────────────────────────────────────────────────────────
 _INSTANCE_DIR = Path(__file__).resolve().parent / "instance"

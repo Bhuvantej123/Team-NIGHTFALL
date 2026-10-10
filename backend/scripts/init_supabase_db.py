@@ -12,6 +12,7 @@ without altering or deleting existing data.
 
 import argparse
 import logging
+import os
 import re
 import sys
 from pathlib import Path
@@ -37,7 +38,7 @@ def mask_db_url(url: str) -> str:
 
 
 def initialize_database(db_url: str | None = None) -> bool:
-    raw_url = db_url or Config.SQLALCHEMY_DATABASE_URI
+    raw_url = db_url or os.getenv("DATABASE_URL") or Config.SQLALCHEMY_DATABASE_URI
     target_url = normalize_database_url(raw_url)
     masked = mask_db_url(target_url)
 
@@ -60,7 +61,7 @@ def initialize_database(db_url: str | None = None) -> bool:
         inspector = inspect(db_module.engine)
         existing_tables = inspector.get_table_names()
         print(f"\n[SCHEMA] Verified database tables ({len(existing_tables)} found):")
-        expected_tables = ["creators", "campaign_briefs", "campaign_workflows", "match_results"]
+        expected_tables = ["creators", "campaign_briefs", "campaign_workflows", "match_results", "campaign_shortlists"]
         for tbl in expected_tables:
             present = tbl in existing_tables
             status_str = "OK (Present)" if present else "MISSING"

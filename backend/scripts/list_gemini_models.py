@@ -17,8 +17,8 @@ from pathlib import Path
 # Ensure project root is on the path so backend.config imports work
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from dotenv import load_dotenv
-load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
+from backend.config import load_environment
+load_environment()
 
 
 def main():
