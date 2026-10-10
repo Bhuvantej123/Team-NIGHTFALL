@@ -1,0 +1,289 @@
+[
+  {
+    "opportunity_id": "opp-001",
+    "fictional_brand": "AuraSound Labs",
+    "product_category": "Consumer Technology",
+    "campaign_objective": "Launch high-fidelity ANC wireless earbuds with synthetic 3D spatial audio visuals",
+    "target_audience": "Tech enthusiasts, audiophiles, and productivity remote workers aged 22-38",
+    "target_platforms": [
+      "instagram",
+      "youtube"
+    ],
+    "budget_min_inr": 80000,
+    "budget_max_inr": 250000,
+    "desired_content_formats": [
+      "3d_exploded_render",
+      "cinematic_audio_visualizer",
+      "unboxing_reel"
+    ],
+    "required_niches": [
+      "AI product advertisements",
+      "Consumer Tech"
+    ],
+    "success_metrics": [
+      "link_clicks",
+      "conversions",
+      "video_completion_rate"
+    ],
+    "suggested_creator_ids": [
+      "creator-002",
+      "creator-009"
+    ],
+    "recommendation_reasons": "Pooja Varma (creator-002) has proven commercial packshot expertise (portfolio-004) and drove 165 promo code conversions in camp-001. Aditya Singhania (creator-009) offers industrial-grade CGI and commands 1.28M monthly views for premium hardware reveals.",
+    "potential_risks": "High production lead time for photorealistic CGI; creator-002 is currently marked unavailable and may require booking lead time or higher expedition fees.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-002",
+    "fictional_brand": "Velluto Cosmetics",
+    "product_category": "Beauty",
+    "campaign_objective": "Showcase clean botanical liquid foundation with macro skin texture simulation",
+    "target_audience": "Beauty buyers, skincare conscious professionals, and Gen-Z makeup fans aged 18-35",
+    "target_platforms": [
+      "instagram",
+      "tiktok"
+    ],
+    "budget_min_inr": 60000,
+    "budget_max_inr": 180000,
+    "desired_content_formats": [
+      "macro_texture_reel",
+      "virtual_try_on",
+      "editorial_short"
+    ],
+    "required_niches": [
+      "Fashion and beauty",
+      "Editorial Photography"
+    ],
+    "success_metrics": [
+      "saves",
+      "promo_code_redemptions",
+      "engagement_rate"
+    ],
+    "suggested_creator_ids": [
+      "creator-003",
+      "creator-010"
+    ],
+    "recommendation_reasons": "Meera Sen (creator-003) achieved a 6.79% conversion rate in camp-003 and has 13k+ monthly Instagram saves. Zara D'Souza (creator-010) brings luxury editorial prestige with 174k followers and strong beauty brand affinity.",
+    "potential_risks": "Audiences expect transparency around AI cosmetic effects; disclosure of synthetic render techniques is essential to prevent false expectation claims.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-003",
+    "fictional_brand": "Tadka & Co. Gourmet",
+    "product_category": "Food",
+    "campaign_objective": "Drive DTC trial orders for artisanal slow-cooked biryani pastes and culinary gravies",
+    "target_audience": "Urban foodies, home chefs, and regional gastronomy enthusiasts aged 24-45",
+    "target_platforms": [
+      "instagram",
+      "youtube"
+    ],
+    "budget_min_inr": 40000,
+    "budget_max_inr": 100000,
+    "desired_content_formats": [
+      "sensory_food_reel",
+      "recipe_walkthrough",
+      "macro_steam_physics"
+    ],
+    "required_niches": [
+      "Food content",
+      "Culinary Arts"
+    ],
+    "success_metrics": [
+      "link_clicks",
+      "checkout_conversions",
+      "saves"
+    ],
+    "suggested_creator_ids": [
+      "creator-004",
+      "creator-013"
+    ],
+    "recommendation_reasons": "Rohan Kulkarni (creator-004) has high sensory food expertise (portfolio-010) and delivered a 64.7% sales lift in camp-004. Karthik Menon (creator-013) demonstrated a 6.14% conversion rate with botanical beverage/food imagery in camp-011.",
+    "potential_risks": "Audience recipe replication friction; requires clear call-to-action discount codes on food delivery or quick-commerce platforms.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-004",
+    "fictional_brand": "ApexPixel Interactive",
+    "product_category": "Gaming",
+    "campaign_objective": "Pre-registration trailer launch for an upcoming cyberpunk anime tactical action RPG",
+    "target_audience": "Competitive and narrative PC/console gamers aged 16-32",
+    "target_platforms": [
+      "youtube",
+      "twitter"
+    ],
+    "budget_min_inr": 90000,
+    "budget_max_inr": 200000,
+    "desired_content_formats": [
+      "cinematic_game_trailer",
+      "character_motion_spotlight",
+      "unreal_breakdown"
+    ],
+    "required_niches": [
+      "Gaming",
+      "Cinematic AI videos",
+      "Game Trailers"
+    ],
+    "success_metrics": [
+      "pre_registrations",
+      "trailer_retention_rate",
+      "impressions"
+    ],
+    "suggested_creator_ids": [
+      "creator-005",
+      "creator-001"
+    ],
+    "recommendation_reasons": "Vikram Nair (creator-005) possesses deep gaming trailer mastery (portfolio-013) with 148k YouTube subscribers. Aarav Sharma (creator-001) brings premier sci-fi cinematic video pipelines (portfolio-001) capable of AAA-grade narrative trailers.",
+    "potential_risks": "Gaming audiences can react skeptically to generative video unless the gameplay asset integration is clearly stated; creator-005 had moderate conversion in camp-008.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-005",
+    "fictional_brand": "NeuroLearn Academy",
+    "product_category": "Education",
+    "campaign_objective": "Drive enrollments for an executive AI engineering and cognitive science masterclass",
+    "target_audience": "Software engineers, data analysts, STEM researchers, and tech founders aged 24-42",
+    "target_platforms": [
+      "youtube",
+      "linkedin"
+    ],
+    "budget_min_inr": 50000,
+    "budget_max_inr": 130000,
+    "desired_content_formats": [
+      "3d_explainer_breakdown",
+      "case_study_carousel",
+      "synthetic_educational_short"
+    ],
+    "required_niches": [
+      "Educational content",
+      "Science & Technology",
+      "Healthcare & Biotech"
+    ],
+    "success_metrics": [
+      "course_applications",
+      "lead_magnet_downloads",
+      "profile_visits"
+    ],
+    "suggested_creator_ids": [
+      "creator-008",
+      "creator-015"
+    ],
+    "recommendation_reasons": "Dr. Shalini Gupta (creator-008) provides academic rigor in science explainers with 77k YouTube followers. Tanvi Joshi (creator-015) has high-trust enterprise resonance on LinkedIn (47.8k followers, 11k profile visits) with 3D biotech explainers.",
+    "potential_risks": "High friction educational ticket size; requires multi-touch retargeting rather than direct single-video purchase assumptions.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-006",
+    "fictional_brand": "TerraThread Studio",
+    "product_category": "Fashion",
+    "campaign_objective": "Promote zero-waste digital and physical luxury streetwear line crafted from recycled ocean fibers",
+    "target_audience": "Eco-conscious urban stylists, streetwear collectors, and digital couture fans aged 20-35",
+    "target_platforms": [
+      "instagram",
+      "tiktok"
+    ],
+    "budget_min_inr": 70000,
+    "budget_max_inr": 220000,
+    "desired_content_formats": [
+      "digital_runway_motion",
+      "avant_garde_lookbook",
+      "transformation_reel"
+    ],
+    "required_niches": [
+      "Fashion and beauty",
+      "Digital Runway",
+      "Social media reels"
+    ],
+    "success_metrics": [
+      "lookbook_visits",
+      "social_shares",
+      "sales_lift"
+    ],
+    "suggested_creator_ids": [
+      "creator-003",
+      "creator-012"
+    ],
+    "recommendation_reasons": "Meera Sen (creator-003) is the digital couture leader in the dataset with 126k Instagram followers and luxury styling. Isha Patel (creator-012) complements with viral lifestyle travel reels and 10k monthly shares.",
+    "potential_risks": "Balancing avant-garde high-concept styling with consumer-friendly wearable purchase intent.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-007",
+    "fictional_brand": "MangaVerse Collectibles",
+    "product_category": "Animation",
+    "campaign_objective": "Presale crowdfunding campaign for limited-run serialized dark fantasy art prints and vinyl figures",
+    "target_audience": "Manga readers, dark fantasy collectors, anime enthusiasts, and convention fans aged 18-34",
+    "target_platforms": [
+      "instagram",
+      "youtube",
+      "tiktok"
+    ],
+    "budget_min_inr": 60000,
+    "budget_max_inr": 150000,
+    "desired_content_formats": [
+      "animated_character_reveal",
+      "ink_wash_motion_short",
+      "artist_process_reel"
+    ],
+    "required_niches": [
+      "Animation",
+      "Character Design",
+      "Graphic Novels & Comics"
+    ],
+    "success_metrics": [
+      "crowdfunding_pledges",
+      "shares",
+      "link_clicks"
+    ],
+    "suggested_creator_ids": [
+      "creator-006",
+      "creator-014"
+    ],
+    "recommendation_reasons": "Ananya Roy (creator-006) generated 165 direct conversions and a 100% sales lift in camp-012 with 108k loyal Instagram followers. Devika Rao (creator-014) brings specialized dark fantasy graphic novel mastery.",
+    "potential_risks": "Creator-014 is currently on production hiatus (availability: false), meaning campaign timeline must accommodate creator-006 or wait for project availability windows.",
+    "disclosure_required": true,
+    "is_simulated": true
+  },
+  {
+    "opportunity_id": "opp-008",
+    "fictional_brand": "UrbanHydrate",
+    "product_category": "E-Commerce",
+    "campaign_objective": "Viral direct-to-consumer challenge for sparkling hydration tablets across short-form platforms",
+    "target_audience": "Fitness hobbyists, college students, desk workers, and active commuters aged 18-30",
+    "target_platforms": [
+      "tiktok",
+      "instagram"
+    ],
+    "budget_min_inr": 35000,
+    "budget_max_inr": 90000,
+    "desired_content_formats": [
+      "viral_trend_reel",
+      "day_in_the_life_vlog",
+      "taste_test_reaction"
+    ],
+    "required_niches": [
+      "Social media reels",
+      "Viral Trends",
+      "Travel & Hospitality"
+    ],
+    "success_metrics": [
+      "reach",
+      "total_views",
+      "link_clicks",
+      "checkout_conversions"
+    ],
+    "suggested_creator_ids": [
+      "creator-007",
+      "creator-012"
+    ],
+    "recommendation_reasons": "Kabir Malhotra (creator-007) delivers explosive viral scale (2.1M monthly views on TikTok, 32.5k shares). Isha Patel (creator-012) adds high-converting lifestyle wellness framing with 98.8k Instagram followers and 7.1k monthly link clicks.",
+    "potential_risks": "High view volume on viral short-form platforms does not guarantee immediate checkout; requires aggressive promo discount code overlay and one-click bio link landing pages.",
+    "disclosure_required": true,
+    "is_simulated": true
+  }
+]

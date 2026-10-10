@@ -1,0 +1,814 @@
+[
+  {
+    "id": "creator-001",
+    "display_name": "Aarav Sharma",
+    "handle": "@aarav_cinematic",
+    "headline": "Cinematic AI Filmmaker & Generative Director",
+    "bio": "Visual storyteller crafting cinematic sci-fi trailers, commercial mood films, and dynamic narrative shorts using state-of-the-art generative video pipelines. Focuses on hyper-consistent character staging and photorealistic cinematography.",
+    "skills": [
+      "Generative Video Direction",
+      "Camera Motion Choreography",
+      "AI Storyboarding",
+      "Color Grading",
+      "Visual FX Prompting"
+    ],
+    "ai_tools": [
+      "Runway Gen-3",
+      "Midjourney v6",
+      "Kling AI",
+      "Topaz Video AI",
+      "ElevenLabs"
+    ],
+    "niches": [
+      "Cinematic AI videos",
+      "Sci-Fi & Speculative Fiction",
+      "Brand Storytelling"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@aarav_cinematic",
+        "url": "https://youtube.com/@aarav_cinematic"
+      },
+      {
+        "name": "instagram",
+        "handle": "@aarav_cinematic",
+        "url": "https://instagram.com/aarav_cinematic"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-001",
+      "portfolio-002",
+      "portfolio-003"
+    ],
+    "style_tags": [
+      "cinematic",
+      "moody",
+      "photorealistic",
+      "atmospheric",
+      "widescreen"
+    ],
+    "starting_price": 45000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Extensive experience delivering high-fidelity cinematic video reels with cutting-edge camera dynamics.",
+    "created_at": "2026-02-10T10:00:00Z"
+  },
+  {
+    "id": "creator-002",
+    "display_name": "Pooja Varma",
+    "handle": "@pooja_ai_ads",
+    "headline": "AI Product Commercial Producer & 3D Visualizer",
+    "bio": "Specialist in high-conversion AI product commercials, e-commerce motion ads, and virtual package mockups. Combines synthetic rendering with realistic physics and seamless packshot transitions.",
+    "skills": [
+      "Commercial Video Production",
+      "3D Product Visualization",
+      "E-commerce Video Ads",
+      "Macro Texture Generation",
+      "Synthetic Lighting"
+    ],
+    "ai_tools": [
+      "Flux.1",
+      "Runway Gen-3",
+      "Magnific AI",
+      "ComfyUI",
+      "Photoshop AI"
+    ],
+    "niches": [
+      "AI product advertisements",
+      "Consumer Tech",
+      "E-Commerce"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@pooja_ai_ads",
+        "url": "https://instagram.com/pooja_ai_ads"
+      },
+      {
+        "name": "linkedin",
+        "handle": "@poojavarma_ai",
+        "url": "https://linkedin.com/in/poojavarma_ai"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-004",
+      "portfolio-005",
+      "portfolio-006"
+    ],
+    "style_tags": [
+      "clean",
+      "commercial",
+      "hyper-detailed",
+      "minimalist",
+      "high-conversion"
+    ],
+    "starting_price": 30000,
+    "currency": "INR",
+    "availability": false,
+    "portfolio_evidence": "Delivered conversion-focused commercial product reels for consumer electronics and lifestyle brands.",
+    "created_at": "2026-02-11T11:30:00Z"
+  },
+  {
+    "id": "creator-003",
+    "display_name": "Meera Sen",
+    "handle": "@meerasen_couture",
+    "headline": "Virtual Fashion Stylist & AI Beauty Art Director",
+    "bio": "Pioneering digital couture and hyper-realistic AI editorial photography. Crafts virtual fashion lookbooks, makeup aesthetics, and digital runway presentations tailored for beauty and lifestyle labels.",
+    "skills": [
+      "Digital Couture Design",
+      "Virtual Makeup Artistry",
+      "Editorial Portraiture",
+      "Textile Simulation",
+      "Aesthetic Lookbooks"
+    ],
+    "ai_tools": [
+      "Midjourney v6",
+      "Magnific AI",
+      "Stable Diffusion XL",
+      "Runway Gen-3"
+    ],
+    "niches": [
+      "Fashion and beauty",
+      "Digital Runway",
+      "Editorial Photography"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@meerasen_couture",
+        "url": "https://instagram.com/meerasen_couture"
+      },
+      {
+        "name": "tiktok",
+        "handle": "@meerasen_couture",
+        "url": "https://tiktok.com/@meerasen_couture"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-007",
+      "portfolio-008",
+      "portfolio-009"
+    ],
+    "style_tags": [
+      "editorial",
+      "glamorous",
+      "avant-garde",
+      "vibrant",
+      "elegant"
+    ],
+    "starting_price": 25000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Curated high-fashion virtual collections and beauty editorial campaigns with exquisite textural fidelity.",
+    "created_at": "2026-02-12T09:15:00Z"
+  },
+  {
+    "id": "creator-004",
+    "display_name": "Rohan Kulkarni",
+    "handle": "@rohan_culinary_ai",
+    "headline": "AI Culinary Motion Artist & Gastronomy Visualizer",
+    "bio": "Brings culinary creations to life through hyper-sensory AI food imagery, sizzling slow-motion food physics, and recipe concept videos. Helps food tech brands and restaurants visualize mouth-watering delicacies.",
+    "skills": [
+      "Culinary Motion Graphics",
+      "Slow-Motion Food Physics",
+      "Macro Food Photography",
+      "Menu Concept Visualization"
+    ],
+    "ai_tools": [
+      "Luma Dream Machine",
+      "Midjourney v6",
+      "Flux.1",
+      "Topaz Video AI"
+    ],
+    "niches": [
+      "Food content",
+      "Beverage & Hospitality",
+      "Culinary Arts"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@rohan_culinary_ai",
+        "url": "https://instagram.com/rohan_culinary_ai"
+      },
+      {
+        "name": "youtube",
+        "handle": "@rohan_culinary_ai",
+        "url": "https://youtube.com/@rohan_culinary_ai"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-010",
+      "portfolio-011"
+    ],
+    "style_tags": [
+      "mouth-watering",
+      "macro",
+      "warm",
+      "sensory",
+      "vibrant"
+    ],
+    "starting_price": 18000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Specialized in appetizing sensory food visuals and dynamic steam/liquid culinary animations.",
+    "created_at": "2026-02-12T14:45:00Z"
+  },
+  {
+    "id": "creator-005",
+    "display_name": "Vikram 'Vex' Nair",
+    "handle": "@vex_gamecraft",
+    "headline": "AI Game Lore Animator & Esports Visual Designer",
+    "bio": "Builds immersive game worlds, AI concept art trailers, and esports motion graphics. Specializes in dark fantasy characters, cyberpunk cities, and cinematic character intros for indie games and gaming studios.",
+    "skills": [
+      "Game Worldbuilding",
+      "Character Lore Animation",
+      "Esports Motion Graphics",
+      "Cyberpunk Environment Design",
+      "Sound FX Sync"
+    ],
+    "ai_tools": [
+      "ComfyUI",
+      "Kling AI",
+      "Midjourney v6",
+      "ElevenLabs",
+      "Suno"
+    ],
+    "niches": [
+      "Gaming",
+      "Esports",
+      "Game Trailers"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@vex_gamecraft",
+        "url": "https://youtube.com/@vex_gamecraft"
+      },
+      {
+        "name": "twitter",
+        "handle": "@vex_gamecraft",
+        "url": "https://twitter.com/vex_gamecraft"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-012",
+      "portfolio-013",
+      "portfolio-014"
+    ],
+    "style_tags": [
+      "cyberpunk",
+      "dark-fantasy",
+      "high-octane",
+      "gritty",
+      "neon"
+    ],
+    "starting_price": 50000,
+    "currency": "INR",
+    "availability": false,
+    "portfolio_evidence": "Developed gaming trailers and character spotlight animations with distinct sci-fi and fantasy aesthetics.",
+    "created_at": "2026-02-13T16:20:00Z"
+  },
+  {
+    "id": "creator-006",
+    "display_name": "Ananya Roy",
+    "handle": "@ananya_motion",
+    "headline": "AI Character Animator & Stylized 2D/3D Motion Creator",
+    "bio": "Combines classic animation principles with cutting-edge diffusion video pipelines. Produces expressive anime, whimsical cartoon shorts, and character-driven narrative clips.",
+    "skills": [
+      "Stylized Character Animation",
+      "Anime & Cel-Shading",
+      "Lip Sync & Expression Tracking",
+      "Motion Design",
+      "Visual Rhythm"
+    ],
+    "ai_tools": [
+      "Pika 2.0",
+      "ComfyUI",
+      "LivePortrait",
+      "ElevenLabs",
+      "Midjourney v6"
+    ],
+    "niches": [
+      "Animation",
+      "Character Design",
+      "Anime & Manga"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@ananya_motion",
+        "url": "https://instagram.com/ananya_motion"
+      },
+      {
+        "name": "youtube",
+        "handle": "@ananya_motion",
+        "url": "https://youtube.com/@ananya_motion"
+      },
+      {
+        "name": "tiktok",
+        "handle": "@ananya_motion",
+        "url": "https://tiktok.com/@ananya_motion"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-015",
+      "portfolio-016",
+      "portfolio-017",
+      "portfolio-018"
+    ],
+    "style_tags": [
+      "stylized",
+      "anime",
+      "playful",
+      "expressive",
+      "handcrafted-feel"
+    ],
+    "starting_price": 35000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Consistent character animation reels featuring expressive emotions and fluid motion arcs.",
+    "created_at": "2026-02-14T10:00:00Z"
+  },
+  {
+    "id": "creator-007",
+    "display_name": "Kabir Malhotra",
+    "handle": "@kabir_viralreels",
+    "headline": "Viral AI Short-Form Content Strategist & Reel Creator",
+    "bio": "Crafts high-retention vertical reels and TikTok clips with algorithmic hooks, kinetic captions, and AI-generated surreal visual transitions. Perfect for rapid consumer engagement and social awareness campaigns.",
+    "skills": [
+      "Short-Form Hook Design",
+      "Vertical Video Editing",
+      "Kinetic Typography",
+      "Surreal Visual Transitions",
+      "Trend Adaptation"
+    ],
+    "ai_tools": [
+      "Runway Gen-3",
+      "Captions AI",
+      "ElevenLabs",
+      "Pika 2.0"
+    ],
+    "niches": [
+      "Social media reels",
+      "Viral Trends",
+      "Youth Culture"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@kabir_viralreels",
+        "url": "https://instagram.com/kabir_viralreels"
+      },
+      {
+        "name": "tiktok",
+        "handle": "@kabir_viralreels",
+        "url": "https://tiktok.com/@kabir_viralreels"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-019",
+      "portfolio-020",
+      "portfolio-021"
+    ],
+    "style_tags": [
+      "fast-paced",
+      "punchy",
+      "viral",
+      "kinetic",
+      "humorous"
+    ],
+    "starting_price": 12000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Specialist in sub-30 second viral reel sequences engineered for high watch times and instant replay value.",
+    "created_at": "2026-02-14T15:10:00Z"
+  },
+  {
+    "id": "creator-008",
+    "display_name": "Dr. Shalini Gupta",
+    "handle": "@shalini_explains",
+    "headline": "AI Educational Explainer Specialist & Science Visualizer",
+    "bio": "Transforms intricate scientific, historical, and technical concepts into engaging visual narratives. Uses AI generation to reconstruct historical events and visualize quantum and astronomical phenomena.",
+    "skills": [
+      "Scientific Visualization",
+      "Historical Reconstructions",
+      "Educational Storyboarding",
+      "Infographic Motion",
+      "Narrative Voice Synthesis"
+    ],
+    "ai_tools": [
+      "Midjourney v6",
+      "Runway Gen-3",
+      "ElevenLabs",
+      "Claude",
+      "After Effects AI"
+    ],
+    "niches": [
+      "Educational content",
+      "Science & Technology",
+      "History & Culture"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@shalini_explains",
+        "url": "https://youtube.com/@shalini_explains"
+      },
+      {
+        "name": "linkedin",
+        "handle": "@shalini_gupta_phd",
+        "url": "https://linkedin.com/in/shalini_gupta_phd"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-022",
+      "portfolio-023",
+      "portfolio-024"
+    ],
+    "style_tags": [
+      "educational",
+      "informative",
+      "clarity-focused",
+      "structured",
+      "scholarly"
+    ],
+    "starting_price": 22000,
+    "currency": "INR",
+    "availability": false,
+    "portfolio_evidence": "Published extensive animated educational explainers covering astronomy, anthropology, and biotechnology.",
+    "created_at": "2026-02-15T08:30:00Z"
+  },
+  {
+    "id": "creator-009",
+    "display_name": "Aditya 'Apex' Singhania",
+    "handle": "@apex_hardware",
+    "headline": "Enterprise Tech Launch Director & CGI Hardware Commercials",
+    "bio": "Enterprise-tier creative director for cutting-edge consumer hardware and luxury gadget releases. Produces photorealistic explosive assembly breakdowns and sleek industrial design showcase spots.",
+    "skills": [
+      "Exploded Hardware Visuals",
+      "Industrial Design Rendering",
+      "High-End CGI Commercials",
+      "Studio Lighting Design",
+      "Broadcast Master Delivery"
+    ],
+    "ai_tools": [
+      "Flux.1",
+      "Runway Gen-3",
+      "Magnific AI",
+      "ComfyUI",
+      "Octane AI"
+    ],
+    "niches": [
+      "AI product advertisements",
+      "Consumer Electronics",
+      "Industrial Design"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@apex_hardware",
+        "url": "https://youtube.com/@apex_hardware"
+      },
+      {
+        "name": "linkedin",
+        "handle": "@adityasinghania_cg",
+        "url": "https://linkedin.com/in/adityasinghania_cg"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-025",
+      "portfolio-026"
+    ],
+    "style_tags": [
+      "enterprise",
+      "sleek",
+      "industrial",
+      "futuristic",
+      "meticulous"
+    ],
+    "starting_price": 180000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Directed flagship product reveal commercials with multi-part exploded renders and cinematic lighting.",
+    "created_at": "2026-02-15T12:00:00Z"
+  },
+  {
+    "id": "creator-010",
+    "display_name": "Zara D'Souza",
+    "handle": "@zara_haute_ai",
+    "headline": "Haute Couture & Luxury Brand AI Creative Strategist",
+    "bio": "International luxury and heritage fashion campaigns brought to life through avant-garde synthetic imagery. Collaborates with luxury perfumeries, high jewelry, and bespoke fashion houses.",
+    "skills": [
+      "Luxury Visual Direction",
+      "High-Jewelry Light Refraction",
+      "Fragrance Moodscape Generation",
+      "Couture Fabric Flow Dynamics"
+    ],
+    "ai_tools": [
+      "Midjourney v6",
+      "Magnific AI",
+      "Kling AI",
+      "Runway Gen-3"
+    ],
+    "niches": [
+      "Fashion and beauty",
+      "Luxury Goods",
+      "Jewelry & Perfumery"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@zara_haute_ai",
+        "url": "https://instagram.com/zara_haute_ai"
+      },
+      {
+        "name": "twitter",
+        "handle": "@zara_couture",
+        "url": "https://twitter.com/zara_couture"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-027",
+      "portfolio-028",
+      "portfolio-029"
+    ],
+    "style_tags": [
+      "luxury",
+      "opulent",
+      "ethereal",
+      "high-fashion",
+      "surreal"
+    ],
+    "starting_price": 220000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Produced high-concept visual campaigns for premium perfumes and haute couture aesthetics.",
+    "created_at": "2026-02-16T14:20:00Z"
+  },
+  {
+    "id": "creator-011",
+    "display_name": "Tenzin Norbu",
+    "handle": "@tenzin_nature_ai",
+    "headline": "Speculative Nature Documentarian & Macro Ecology Storyteller",
+    "bio": "Creates nature documentaries capturing deep-sea biomes, alien ecology simulations, and macro flora/fauna interactions. Focuses on cinematic pacing and atmospheric biological soundscapes.",
+    "skills": [
+      "Documentary Pacing",
+      "Speculative Biology Simulation",
+      "Underwater Fluid Aesthetics",
+      "Ambient Audio Design"
+    ],
+    "ai_tools": [
+      "Runway Gen-3",
+      "Midjourney v6",
+      "Udio",
+      "Topaz Video AI"
+    ],
+    "niches": [
+      "Cinematic AI videos",
+      "Documentary & Nature",
+      "Environmental Sci-Fi"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@tenzin_nature_ai",
+        "url": "https://youtube.com/@tenzin_nature_ai"
+      },
+      {
+        "name": "instagram",
+        "handle": "@tenzin_nature_ai",
+        "url": "https://instagram.com/tenzin_nature_ai"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-030",
+      "portfolio-031",
+      "portfolio-032"
+    ],
+    "style_tags": [
+      "documentary",
+      "organic",
+      "tranquil",
+      "immersive",
+      "majestic"
+    ],
+    "starting_price": 60000,
+    "currency": "INR",
+    "availability": false,
+    "portfolio_evidence": "Created breathtaking speculative nature mini-series exploring ocean depths and ancient prehistoric flora.",
+    "created_at": "2026-02-16T17:40:00Z"
+  },
+  {
+    "id": "creator-012",
+    "display_name": "Isha Patel",
+    "handle": "@isha_wanderlust_ai",
+    "headline": "AI Travel & Lifestyle Storyteller | Short-Form Reels",
+    "bio": "Weaves AI-augmented travel itineraries, dreamy destinations, and boutique hospitality aesthetics into engaging short-form reels. Helps lifestyle brands inspire wanderlust with dynamic visuals.",
+    "skills": [
+      "Lifestyle Reel Curation",
+      "Atmospheric Travel Aesthetics",
+      "Dynamic Match-Cuts",
+      "Social Storyboarding"
+    ],
+    "ai_tools": [
+      "Luma Dream Machine",
+      "Midjourney v6",
+      "ElevenLabs",
+      "CapCut AI"
+    ],
+    "niches": [
+      "Social media reels",
+      "Travel & Hospitality",
+      "Lifestyle & Wellness"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@isha_wanderlust_ai",
+        "url": "https://instagram.com/isha_wanderlust_ai"
+      },
+      {
+        "name": "tiktok",
+        "handle": "@isha_wanderlust_ai",
+        "url": "https://tiktok.com/@isha_wanderlust_ai"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-033",
+      "portfolio-034"
+    ],
+    "style_tags": [
+      "dreamy",
+      "sun-drenched",
+      "wanderlust",
+      "vibrant",
+      "inspirational"
+    ],
+    "starting_price": 15000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Crafted travel aesthetic reels showcasing luxury stays and exotic landscapes with seamless transitions.",
+    "created_at": "2026-02-17T09:00:00Z"
+  },
+  {
+    "id": "creator-013",
+    "display_name": "Karthik Menon",
+    "handle": "@karthik_fluidfood",
+    "headline": "Beverage Splash & Gourmet Commercial AI Specialist",
+    "bio": "Specialized in high-speed beverage splash physics, bubbling carbonation dynamics, and gourmet culinary commercials. Delivers mouthwatering liquid motion for craft breweries, coffee brands, and artisanal eateries.",
+    "skills": [
+      "Fluid Simulation Aesthetics",
+      "Beverage Splash Dynamics",
+      "Gourmet Plating Visuals",
+      "Commercial Sound Stems"
+    ],
+    "ai_tools": [
+      "Kling AI",
+      "Flux.1",
+      "Runway Gen-3",
+      "Magnific AI"
+    ],
+    "niches": [
+      "Food content",
+      "Beverage & Cocktails",
+      "AI product advertisements"
+    ],
+    "platforms": [
+      {
+        "name": "instagram",
+        "handle": "@karthik_fluidfood",
+        "url": "https://instagram.com/karthik_fluidfood"
+      },
+      {
+        "name": "youtube",
+        "handle": "@karthik_fluidfood",
+        "url": "https://youtube.com/@karthik_fluidfood"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-035",
+      "portfolio-036",
+      "portfolio-037"
+    ],
+    "style_tags": [
+      "refreshing",
+      "dynamic",
+      "macro-liquid",
+      "crisp",
+      "sensory"
+    ],
+    "starting_price": 28000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "High-speed liquid splash and artisanal beverage commercials with crisp photorealism.",
+    "created_at": "2026-02-17T13:10:00Z"
+  },
+  {
+    "id": "creator-014",
+    "display_name": "Devika Rao",
+    "handle": "@devika_motioncomics",
+    "headline": "AI Motion Comic & Graphic Novel Cinematic Animator",
+    "bio": "Transforms graphic novels and comic panels into kinetic motion comics with atmospheric parallax, ink-wash aesthetics, and dramatic voiceover scoring. Great for indie game backstories and publishing houses.",
+    "skills": [
+      "Motion Comic Animation",
+      "Parallax Depth Layering",
+      "Ink-and-Brush AI Aesthetics",
+      "Comic Book Storyboarding"
+    ],
+    "ai_tools": [
+      "Midjourney v6",
+      "ComfyUI",
+      "Pika 2.0",
+      "ElevenLabs"
+    ],
+    "niches": [
+      "Animation",
+      "Graphic Novels & Comics",
+      "Dark Fantasy"
+    ],
+    "platforms": [
+      {
+        "name": "youtube",
+        "handle": "@devika_motioncomics",
+        "url": "https://youtube.com/@devika_motioncomics"
+      },
+      {
+        "name": "twitter",
+        "handle": "@devika_comics",
+        "url": "https://twitter.com/devika_comics"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-038",
+      "portfolio-039",
+      "portfolio-040"
+    ],
+    "style_tags": [
+      "stylized-ink",
+      "dramatic",
+      "noir",
+      "cinematic-comic",
+      "bold"
+    ],
+    "starting_price": 40000,
+    "currency": "INR",
+    "availability": false,
+    "portfolio_evidence": "Produced dark fantasy and cyberpunk motion comic episodes with layered depth and sound effects.",
+    "created_at": "2026-02-18T11:00:00Z"
+  },
+  {
+    "id": "creator-015",
+    "display_name": "Tanvi Joshi",
+    "handle": "@tanvi_medvis",
+    "headline": "Biomedical & Healthcare AI Visual Educator",
+    "bio": "Visualizes complex biological mechanisms, cellular pathways, and medical devices through clear, aesthetically refined 3D-styled AI animation. Designed for healthtech startups, universities, and patient education.",
+    "skills": [
+      "Cellular Mechanism Animation",
+      "Medical Device Storyboarding",
+      "Microscopic Worldbuilding",
+      "Clear Scientific Narration"
+    ],
+    "ai_tools": [
+      "Runway Gen-3",
+      "Flux.1",
+      "Midjourney v6",
+      "ElevenLabs"
+    ],
+    "niches": [
+      "Educational content",
+      "Healthcare & Biotech",
+      "Life Sciences"
+    ],
+    "platforms": [
+      {
+        "name": "linkedin",
+        "handle": "@tanvijoshi_biovis",
+        "url": "https://linkedin.com/in/tanvijoshi_biovis"
+      },
+      {
+        "name": "youtube",
+        "handle": "@tanvi_medvis",
+        "url": "https://youtube.com/@tanvi_medvis"
+      }
+    ],
+    "portfolio_items": [
+      "portfolio-041",
+      "portfolio-042",
+      "portfolio-043"
+    ],
+    "style_tags": [
+      "scientific",
+      "clean",
+      "microscopic",
+      "illuminating",
+      "educational"
+    ],
+    "starting_price": 32000,
+    "currency": "INR",
+    "availability": true,
+    "portfolio_evidence": "Crafted precise biomedical animations explaining cellular immunology and robotic surgical tools.",
+    "created_at": "2026-02-18T16:00:00Z"
+  }
+]
