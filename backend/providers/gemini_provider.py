@@ -12,11 +12,31 @@ P1 owns all changes.
 import json
 import logging
 import os
+import re
+import time
 from typing import Optional
 
 from backend.providers.base import BriefProvider, BriefResult
 
 logger = logging.getLogger(__name__)
+
+# Sensitive data redaction patterns to avoid leaking credentials into logs
+_REDACT_PATTERNS = [
+    re.compile(r"AIza[0-9A-Za-z-_]{30,45}"),            # Google API key pattern
+    re.compile(r"key=([^& \t\r\n]+)", re.IGNORECASE),   # URL param key=...
+    re.compile(r"x-goog-api-key['\":\s=]+([^\s,'\"]+)", re.IGNORECASE),
+    re.compile(r"bearer\s+([^\s,'\"]+)", re.IGNORECASE),
+    re.compile(r"password=([^& \t\r\n]+)", re.IGNORECASE),
+]
+
+
+def _sanitize_error_message(msg: str) -> str:
+    """Removes API keys, bearer tokens, or credentials from error messages."""
+    sanitized = str(msg or "")
+    for pattern in _REDACT_PATTERNS:
+        sanitized = pattern.sub("[REDACTED]", sanitized)
+    return sanitized
+
 
 # Fields Gemini is permitted to generate/update
 _EDITABLE_FIELDS = {
@@ -82,23 +102,45 @@ class GeminiProvider(BriefProvider):
     Falls back safely if the key or model is invalid.
     """
 
-    def __init__(self, api_key: str, model_name: str) -> None:
+    def __init__(
+        self,
+        api_key: str,
+        model_name: str,
+        timeout_ms: Optional[int] = None,
+        max_retries: Optional[int] = None,
+    ) -> None:
         self._model_name = model_name
         self._available = False
         self._client = None
+        self._timeout_ms = timeout_ms if timeout_ms is not None else int(os.getenv("GEMINI_TIMEOUT_MS", "45000"))
+        self._max_retries = max_retries if max_retries is not None else int(os.getenv("GEMINI_MAX_RETRIES", "2"))
 
         try:
             from google import genai  # type: ignore
-            self._client = genai.Client(api_key=api_key)
+            from google.genai import types  # type: ignore
+
+            http_options = types.HttpOptions(
+                timeout=self._timeout_ms,
+                retry_options=types.HttpRetryOptions(
+                    attempts=self._max_retries,
+                    http_status_codes=[429, 500, 503, 504],
+                ),
+            )
+            self._client = genai.Client(api_key=api_key, http_options=http_options)
             # Validate the model exists for this key
             self._client.models.get(model=model_name)
             self._available = True
-            logger.info("GeminiProvider: model '%s' validated successfully.", model_name)
+            logger.info(
+                "GeminiProvider: model '%s' validated successfully (timeout: %dms, retries: %d).",
+                model_name, self._timeout_ms, self._max_retries,
+            )
         except ImportError:
             logger.warning("GeminiProvider: google-genai package not installed. Using mock.")
         except Exception as exc:
+            safe_err = _sanitize_error_message(str(exc))
             logger.warning(
-                "GeminiProvider: model validation failed (%s). Will use mock.", exc
+                "GeminiProvider: model validation failed (%s: %s). Will use mock.",
+                type(exc).__name__, safe_err,
             )
 
     def generate_brief(
@@ -113,24 +155,38 @@ class GeminiProvider(BriefProvider):
             return MockProvider().generate_brief(raw_inputs, user_edited_fields)
 
         prompt = _build_prompt(raw_inputs, user_edited_fields)
+        start_time = time.perf_counter()
 
         try:
+            from google.genai import types  # type: ignore
+
+            config = types.GenerateContentConfig(
+                response_mime_type="application/json",
+            )
             response = self._client.models.generate_content(
                 model=self._model_name,
                 contents=prompt,
+                config=config,
             )
-            text = response.text.strip()
+            text = (response.text or "").strip()
             fields = self._parse_response(text)
             if fields is None:
                 # Retry with stricter prompt
+                logger.info("GeminiProvider: Initial response was not clean JSON. Retrying with stricter instructions.")
                 retry_prompt = prompt + "\n\nReturn ONLY the JSON object. No other text."
                 retry_response = self._client.models.generate_content(
                     model=self._model_name,
                     contents=retry_prompt,
+                    config=config,
                 )
-                retry_text = retry_response.text.strip()
+                retry_text = (retry_response.text or "").strip()
                 fields = self._parse_response(retry_text)
                 if fields is None:
+                    elapsed = round(time.perf_counter() - start_time, 2)
+                    logger.warning(
+                        "GeminiProvider: parse failed after %.2fs. Returning partial fallback.",
+                        elapsed,
+                    )
                     return BriefResult(
                         source="gemini_raw",
                         model=self._model_name,
@@ -150,6 +206,11 @@ class GeminiProvider(BriefProvider):
 
             # Determine source
             source = "gemini_partial" if user_edited_fields else "gemini"
+            elapsed = round(time.perf_counter() - start_time, 2)
+            logger.info(
+                "GeminiProvider: brief successfully generated in %.2fs (source: %s, model: %s).",
+                elapsed, source, self._model_name,
+            )
             return BriefResult(
                 source=source,
                 model=self._model_name,
@@ -157,20 +218,42 @@ class GeminiProvider(BriefProvider):
             )
 
         except Exception as exc:
+            elapsed = round(time.perf_counter() - start_time, 2)
             exc_name = type(exc).__name__
-            exc_str = str(exc).lower()
+            safe_msg = _sanitize_error_message(str(exc))
+            exc_str = safe_msg.lower()
 
-            # Rate limit
-            if "429" in str(exc) or "resource_exhausted" in exc_str or "rate" in exc_str:
-                raise _GeminiRateLimitError(str(exc)) from exc
-            # Timeout
-            if "timeout" in exc_str or "deadline" in exc_str:
-                raise _GeminiTimeoutError(str(exc)) from exc
+            logger.warning(
+                "GeminiProvider: generation failed after %.2fs with %s: %s",
+                elapsed, exc_name, safe_msg,
+            )
+
+            # Check for Rate limit
+            if (
+                "429" in safe_msg
+                or "resource_exhausted" in exc_str
+                or "rate" in exc_name.lower()
+                or "ratelimit" in exc_str
+                or "quota" in exc_str
+            ):
+                raise _GeminiRateLimitError(f"Rate limit exceeded: {safe_msg}") from exc
+
+            # Check for Timeout / deadline / cancelled
+            if (
+                "timeout" in exc_name.lower()
+                or "deadline" in exc_name.lower()
+                or "timeout" in exc_str
+                or "deadline" in exc_str
+            ):
+                raise _GeminiTimeoutError(f"Request timed out: {safe_msg}") from exc
+
             # Other API error
-            raise _GeminiAPIError(str(exc)) from exc
+            raise _GeminiAPIError(f"Provider API error: {safe_msg}") from exc
 
     def _parse_response(self, text: str) -> Optional[dict]:
         """Attempt to parse JSON from Gemini's response. Returns None on failure."""
+        if not text:
+            return None
         # Strip markdown code fences if present
         if text.startswith("```"):
             lines = text.split("\n")

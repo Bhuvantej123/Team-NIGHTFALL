@@ -73,3 +73,5 @@ class Config:
     # Gemini
     GEMINI_API_KEY: str | None = os.getenv("GEMINI_API_KEY") or None
     GEMINI_MODEL: str | None = os.getenv("GEMINI_MODEL") or None
+    GEMINI_TIMEOUT_MS: int = int(os.getenv("GEMINI_TIMEOUT_MS", "45000"))
+    GEMINI_MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "2"))

@@ -32,10 +32,17 @@ def _build_provider(app: Flask) -> None:
     """Initialise the BriefProvider and attach it to app.config."""
     api_key = app.config.get("GEMINI_API_KEY")
     model_name = app.config.get("GEMINI_MODEL")
+    timeout_ms = app.config.get("GEMINI_TIMEOUT_MS", 45000)
+    max_retries = app.config.get("GEMINI_MAX_RETRIES", 2)
 
     if api_key and model_name:
         from backend.providers.gemini_provider import GeminiProvider
-        provider = GeminiProvider(api_key=api_key, model_name=model_name)
+        provider = GeminiProvider(
+            api_key=api_key,
+            model_name=model_name,
+            timeout_ms=timeout_ms,
+            max_retries=max_retries,
+        )
         if provider.is_available():
             app.config["BRIEF_PROVIDER"] = provider
             app.config["MOCK_REASON"] = None
@@ -64,6 +71,8 @@ def create_app(config_object: type = Config) -> Flask:
     app.config["SQLALCHEMY_DATABASE_URI"] = config_object.SQLALCHEMY_DATABASE_URI
     app.config["GEMINI_API_KEY"] = config_object.GEMINI_API_KEY
     app.config["GEMINI_MODEL"] = config_object.GEMINI_MODEL
+    app.config["GEMINI_TIMEOUT_MS"] = getattr(config_object, "GEMINI_TIMEOUT_MS", 45000)
+    app.config["GEMINI_MAX_RETRIES"] = getattr(config_object, "GEMINI_MAX_RETRIES", 2)
 
     # CORS — allow the Vite dev server
     CORS(app, resources={r"/api/*": {"origins": config_object.FRONTEND_URL}})

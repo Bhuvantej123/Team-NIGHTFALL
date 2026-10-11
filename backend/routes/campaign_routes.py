@@ -5,6 +5,7 @@ P1 owns all changes.
 """
 
 import logging
+import time
 from flask import Blueprint, request, jsonify, current_app
 
 from backend.services.brief_service import (
@@ -131,8 +132,11 @@ def generate_brief(campaign_id: str):
     if provider is None:
         provider = MockProvider()
 
+    start_time = time.perf_counter()
     try:
         result = generate_or_regenerate_brief(campaign_id, provider)
+        elapsed = round(time.perf_counter() - start_time, 2)
+        logger.info("Generated brief for campaign %s in %.2fs", campaign_id, elapsed)
         return jsonify(result), 200
     except CampaignNotFoundError as exc:
         return jsonify({
@@ -141,32 +145,48 @@ def generate_brief(campaign_id: str):
             "details": exc.details,
         }), 404
     except GeminiRateLimitError as exc:
-        logger.warning("Gemini rate limit in brief generation: %s", exc)
+        elapsed = round(time.perf_counter() - start_time, 2)
+        logger.warning(
+            "Gemini rate limit in brief generation for campaign %s after %.2fs (%s)",
+            campaign_id, elapsed, type(exc).__name__,
+        )
         return jsonify({
             "error": "Gemini API rate limit reached. Please wait a moment and retry.",
             "code": "RATE_LIMIT_EXCEEDED",
-            "details": {"retry_after": 30},
+            "details": {"retry_after": 30, "elapsed_seconds": elapsed},
         }), 429
     except GeminiTimeoutError as exc:
-        logger.warning("Gemini timeout in brief generation: %s", exc)
+        elapsed = round(time.perf_counter() - start_time, 2)
+        logger.warning(
+            "Gemini timeout in brief generation for campaign %s after %.2fs (%s)",
+            campaign_id, elapsed, type(exc).__name__,
+        )
         return jsonify({
             "error": "Brief generation timed out waiting for the AI provider.",
             "code": "GATEWAY_TIMEOUT",
-            "details": {},
+            "details": {"elapsed_seconds": elapsed},
         }), 504
     except GeminiAPIError as exc:
-        logger.error("Gemini API error in brief generation: %s", exc)
+        elapsed = round(time.perf_counter() - start_time, 2)
+        logger.error(
+            "Gemini API error in brief generation for campaign %s after %.2fs (%s)",
+            campaign_id, elapsed, type(exc).__name__,
+        )
         return jsonify({
             "error": "Upstream AI provider encountered an error.",
             "code": "UPSTREAM_ERROR",
-            "details": {},
+            "details": {"elapsed_seconds": elapsed},
         }), 502
     except Exception as exc:
-        logger.exception("Unexpected error in generate-brief for %s: %s", campaign_id, exc)
+        elapsed = round(time.perf_counter() - start_time, 2)
+        logger.exception(
+            "Unexpected error in generate-brief for %s after %.2fs (%s)",
+            campaign_id, elapsed, type(exc).__name__,
+        )
         return jsonify({
             "error": "An internal error occurred while generating the campaign brief.",
             "code": "INTERNAL_ERROR",
-            "details": {},
+            "details": {"elapsed_seconds": elapsed},
         }), 500
 
 
