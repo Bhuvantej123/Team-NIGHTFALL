@@ -348,7 +348,7 @@ export function CastingRoom({
                   window.location.hash = `/campaigns/${campaign?.id}/brief`;
                 }
               }}
-              className="px-5 py-2.5 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[13px] font-medium transition-colors cursor-pointer"
+              className="px-5 py-2.5 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[13px] font-medium transition-colors cursor-pointer"
             >
               Return to Brief
             </button>
@@ -475,7 +475,7 @@ export function CastingRoom({
                       onClick={() => setActiveWorkIndex(idx)}
                       className={`w-14 h-14 rounded-ctl overflow-hidden border transition-all cursor-pointer relative group ${
                         activeWorkIndex === idx
-                          ? 'border-cobalt ring-2 ring-cobalt/40 opacity-100 scale-105'
+                          ? 'border-stage-ink ring-2 ring-stage-ink/40 opacity-100 scale-105'
                           : 'border-stage-line opacity-60 hover:opacity-100'
                       }`}
                       title={w.title || `Portfolio item ${idx + 1}`}
@@ -519,7 +519,7 @@ export function CastingRoom({
               {/* Creator Identity & Full Dossier Link */}
               <div className="space-y-1.5 border-b border-stage-line pb-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[9.5px] uppercase tracking-wider text-cobalt font-semibold bg-cobalt/15 px-2 py-0.5 rounded-[2px] border border-cobalt/30">
+                  <span className="font-mono text-[9.5px] uppercase tracking-wider text-stage-ink font-semibold bg-stage-ink/15 px-2 py-0.5 rounded-[2px] border border-stage-ink/30">
                     CANDIDATE INTELLIGENCE
                   </span>
                   <button
@@ -530,7 +530,7 @@ export function CastingRoom({
                         window.location.href = `/creators/${candidate.id}`;
                       }
                     }}
-                    className="inline-flex items-center gap-1 font-mono text-[10.5px] text-cobalt hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 font-mono text-[10.5px] text-stage-ink hover:underline cursor-pointer"
                   >
                     <span>Full Profile</span>
                     <ExternalLink size={11} />
@@ -560,7 +560,7 @@ export function CastingRoom({
                     {candidate.fitScore || 88}% Fit
                   </span>
                 </div>
-                <span className="font-mono text-[10.5px] uppercase font-semibold px-2 py-0.5 rounded-[2px] bg-cobalt/20 text-cobalt border border-cobalt/30">
+                <span className="font-mono text-[10.5px] uppercase font-semibold px-2 py-0.5 rounded-[2px] bg-stage-ink/20 text-stage-ink border border-stage-ink/30">
                   {candidate.fitLevel || 'Strong Match'}
                 </span>
               </div>
@@ -569,7 +569,7 @@ export function CastingRoom({
               <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
                 <div className="p-3 rounded-ctl bg-stage border border-stage-line space-y-0.5">
                   <span className="text-[9.5px] uppercase text-stage-ink-2 flex items-center gap-1">
-                    <Users size={11} className="text-cobalt" /> Reach / Followers
+                    <Users size={11} className="text-stage-ink" /> Reach / Followers
                   </span>
                   <div className="text-stage-ink font-semibold text-[13px]">
                     {candidateAnalytics?.summary?.current_followers
@@ -584,7 +584,7 @@ export function CastingRoom({
 
                 <div className="p-3 rounded-ctl bg-stage border border-stage-line space-y-0.5">
                   <span className="text-[9.5px] uppercase text-stage-ink-2 flex items-center gap-1">
-                    <Heart size={11} className="text-cobalt" /> Engagement
+                    <Heart size={11} className="text-stage-ink" /> Engagement
                   </span>
                   <div className="text-stage-ink font-semibold text-[13px]">
                     {candidateAnalytics?.summary?.avg_engagement_rate
@@ -602,22 +602,27 @@ export function CastingRoom({
                 <div className="p-3 rounded-ctl bg-stage border border-stage-line space-y-1.5 font-mono text-[11px]">
                   <div className="flex items-center justify-between text-stage-ink-2 text-[9.5px] uppercase tracking-wider">
                     <span className="flex items-center gap-1 text-verified font-medium">
-                      <Award size={12} /> Verified Brand Deal
+                      <Award size={12} /> {candidateAnalytics.past_campaigns[0].provenance_label ? 'Documented Brand Deal' : 'Verified Brand Deal'}
                     </span>
                     <span className="capitalize">{candidateAnalytics.past_campaigns[0].platform}</span>
                   </div>
                   <div className="text-stage-ink font-medium text-[12px]">
                     {candidateAnalytics.past_campaigns[0].brand} — {candidateAnalytics.past_campaigns[0].product}
                   </div>
+                  {candidateAnalytics.past_campaigns[0].deliverables && (
+                    <div className="text-stage-ink-2 text-[10px]">
+                      Deliverables: {candidateAnalytics.past_campaigns[0].deliverables}
+                    </div>
+                  )}
                   <div className="flex items-center justify-between text-[10.5px] pt-1 border-t border-stage-line/50 text-stage-ink-2">
                     <span className="text-verified">+{candidateAnalytics.past_campaigns[0].sales_lift_pct}% Sales</span>
                     <span>{candidateAnalytics.past_campaigns[0].conversions} orders</span>
-                    <span>{candidateAnalytics.past_campaigns[0].roas_estimate}x ROAS</span>
+                    <span>{candidateAnalytics.past_campaigns[0].roas_estimate}x ROAS (est.)</span>
                   </div>
                 </div>
               ) : (
                 <div className="p-3 rounded-ctl bg-stage border border-stage-line text-[10.5px] font-mono text-stage-ink-2">
-                  Brand Deals: 100% verified merchant attribution ledger active.
+                  No documented brand collaborations yet.
                 </div>
               )}
 
@@ -745,8 +750,8 @@ export function CastingRoom({
                   onClick={handleToggleShortlist}
                   className={`flex-1 h-11 rounded-ctl text-[13px] font-medium flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
                     isShortlisted
-                      ? 'bg-stage border border-cobalt text-cobalt hover:bg-cobalt/10'
-                      : 'bg-cobalt hover:bg-cobalt-press text-white'
+                      ? 'bg-stage border border-stage-ink text-stage-ink hover:bg-stage-ink/10'
+                      : 'bg-stage-ink hover:bg-stage-ink/90 text-stage'
                   }`}
                   aria-label={isShortlisted ? 'Remove from shortlist' : 'Add to shortlist'}
                 >
@@ -818,7 +823,7 @@ export function CastingRoom({
                         window.location.hash = `/campaigns/${campaign?.id}/shortlist`;
                       }
                     }}
-                    className="w-full sm:w-auto px-6 py-2.5 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white font-medium text-[13px] transition-colors cursor-pointer shadow-sm"
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-ctl bg-stage-ink hover:bg-stage-ink/90 text-stage font-medium text-[13px] transition-colors cursor-pointer shadow-sm"
                   >
                     Review shortlist
                   </button>
@@ -885,7 +890,7 @@ export function CastingRoom({
               >
                 <div
                   className={`w-20 h-[72px] rounded-ctl overflow-hidden bg-stage-raised border border-stage-line relative ${
-                    isCurrent ? 'outline outline-2 outline-cobalt outline-offset-1' : ''
+                    isCurrent ? 'outline outline-2 outline-stage-ink outline-offset-1' : ''
                   }`}
                 >
                   {leadImg ? (
@@ -900,7 +905,7 @@ export function CastingRoom({
                   {isItemShortlisted && (
                     <div
                       aria-label="Shortlisted"
-                      className="absolute top-1 right-1 w-4 h-4 rounded-full bg-cobalt text-white flex items-center justify-center shadow"
+                      className="absolute top-1 right-1 w-4 h-4 rounded-full bg-stage-ink text-stage flex items-center justify-center shadow"
                     >
                       <Check size={10} strokeWidth={3} />
                     </div>

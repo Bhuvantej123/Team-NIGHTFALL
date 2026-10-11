@@ -93,7 +93,7 @@ export function ColophonSheet({ isOpen, onClose, work, creator, onSelectCreator,
                 className="flex items-center justify-between p-2.5 -mx-2.5 rounded-ctl hover:bg-sunken border border-transparent hover:border-line transition-all cursor-pointer group/author"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover/author:border-cobalt transition-colors shadow-2xs">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover/author:border-ink transition-colors shadow-2xs">
                     <img
                       src={creator?.avatar || work.imageUrl}
                       alt={creator?.name || 'Creator'}
@@ -101,7 +101,7 @@ export function ColophonSheet({ isOpen, onClose, work, creator, onSelectCreator,
                     />
                   </div>
                   <div>
-                    <div className="font-medium text-ink text-[15px] group-hover/author:text-cobalt transition-colors">
+                    <div className="font-medium text-ink text-[15px] group-hover/author:text-ink transition-colors">
                       {creator?.name || work.creatorName || 'Creator'}
                     </div>
                     <div className="text-ink-2 text-[12px]">
@@ -121,7 +121,7 @@ export function ColophonSheet({ isOpen, onClose, work, creator, onSelectCreator,
                       Active Creator
                     </span>
                   )}
-                  <span className="text-cobalt text-[9.5px] uppercase font-semibold">
+                  <span className="text-ink text-[9.5px] uppercase font-semibold">
                     {creator?.formats?.join(' · ') || 'Reels 9:16 · Photoshoots 4:5'}
                   </span>
                 </div>
@@ -226,7 +226,7 @@ export function ColophonSheet({ isOpen, onClose, work, creator, onSelectCreator,
           <div className="p-6 border-t border-line bg-paper/50 flex items-center justify-end">
             <button
               onClick={onClose}
-              className="px-5 py-2 rounded-ctl bg-cobalt text-white text-[13px] font-medium hover:bg-cobalt-press transition-colors cursor-pointer"
+              className="px-5 py-2 rounded-ctl bg-ink text-surface text-[13px] font-medium hover:bg-ink/85 transition-colors cursor-pointer"
             >
               Done reading
             </button>

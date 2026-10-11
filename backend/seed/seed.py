@@ -118,8 +118,10 @@ def seed_database(
         raise ValueError(f"Dataset validation failed with {len(validation_errors)} error(s):{err_msg}")
 
     # Ensure tables exist without modifying unrelated tables
-    target_uri = db_uri or Config.SQLALCHEMY_DATABASE_URI
-    init_db(target_uri)
+    from backend.models.database import engine
+    if engine is None or db_uri:
+        target_uri = db_uri or Config.SQLALCHEMY_DATABASE_URI
+        init_db(target_uri)
 
     inserted = 0
     updated = 0

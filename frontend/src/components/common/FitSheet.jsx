@@ -129,7 +129,7 @@ export function FitSheet({
                 <button
                   type="button"
                   onClick={() => setShowHowWeScore(!showHowWeScore)}
-                  className="inline-flex items-center gap-1 font-mono text-[11px] text-cobalt hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1 font-mono text-[11px] text-ink hover:underline cursor-pointer"
                 >
                   <HelpCircle size={13} strokeWidth={1.5} />
                   <span>How we score</span>
@@ -247,7 +247,7 @@ export function FitSheet({
               className={`px-5 py-2.5 rounded-ctl text-[13px] font-medium flex items-center gap-2 transition-all cursor-pointer ${
                 isShortlisted
                   ? 'bg-ink text-surface hover:bg-ink-2'
-                  : 'bg-cobalt text-white hover:bg-cobalt-press shadow-sm'
+                  : 'bg-ink hover:bg-ink/85 text-surface shadow-sm'
               }`}
             >
               {isShortlisted ? (

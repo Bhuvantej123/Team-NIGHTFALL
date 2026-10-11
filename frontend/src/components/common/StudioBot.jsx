@@ -217,7 +217,7 @@ export function StudioBot({
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full bg-surface border border-line shadow-float text-ink text-[12px] font-mono cursor-pointer hover:border-cobalt transition-colors"
+            className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full bg-surface border border-line shadow-float text-ink text-[12px] font-mono cursor-pointer hover:border-ink transition-colors"
             onClick={() => setIsOpen(true)}
           >
             <span className="w-2 h-2 rounded-full bg-verified animate-pulse" />
@@ -233,7 +233,7 @@ export function StudioBot({
           className={`w-14 h-14 rounded-full flex items-center justify-center shadow-float border transition-all cursor-pointer ${
             isOpen
               ? 'bg-ink text-surface border-ink'
-              : 'bg-cobalt text-white border-cobalt hover:bg-cobalt-press'
+              : 'bg-ink text-surface border-ink hover:bg-ink/85'
           }`}
           aria-label="Toggle AI Concierge Bot"
           title="Colophon Studio Concierge AI"
@@ -255,7 +255,7 @@ export function StudioBot({
             {/* Header */}
             <div className="px-5 py-4 bg-paper border-b border-line flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-cobalt text-white flex items-center justify-center flex-shrink-0 shadow-2xs">
+                <div className="w-9 h-9 rounded-full bg-ink text-surface flex items-center justify-center flex-shrink-0 shadow-2xs">
                   <Bot size={20} strokeWidth={1.8} />
                 </div>
                 <div>
@@ -338,7 +338,7 @@ export function StudioBot({
                               act.action?.();
                               setIsOpen(false);
                             }}
-                            className="w-full py-1.5 px-3 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[12px] font-medium flex items-center justify-between transition-colors shadow-2xs cursor-pointer"
+                            className="w-full py-1.5 px-3 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[12px] font-medium flex items-center justify-between transition-colors shadow-2xs cursor-pointer"
                           >
                             <span>{act.label}</span>
                             <ArrowRight size={13} strokeWidth={2} />
@@ -401,14 +401,14 @@ export function StudioBot({
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder="Ask about creators, briefs, licensing, or issues..."
-                  className="flex-1 h-10 px-3.5 rounded-ctl bg-surface border border-line text-[13px] text-ink placeholder:text-ink-3 focus:border-cobalt focus:outline-none transition-colors"
+                  className="flex-1 h-10 px-3.5 rounded-ctl bg-surface border border-line text-[13px] text-ink placeholder:text-ink-3 focus:border-ink focus:outline-none transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={!inputText.trim()}
                   className={`w-10 h-10 rounded-ctl flex items-center justify-center transition-colors cursor-pointer ${
                     inputText.trim()
-                      ? 'bg-cobalt text-white hover:bg-cobalt-press shadow-2xs'
+                      ? 'bg-ink text-surface hover:bg-ink/85 shadow-2xs'
                       : 'bg-sunken text-ink-3 cursor-not-allowed border border-line'
                   }`}
                   aria-label="Send query"

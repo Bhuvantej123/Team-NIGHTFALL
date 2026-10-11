@@ -64,7 +64,7 @@ export function StepRail({
                     isDone
                       ? 'bg-ink text-surface'
                       : isCurrent
-                      ? 'border-2 border-cobalt bg-surface text-cobalt ring-2 ring-cobalt-tint'
+                      ? 'border-2 border-ink bg-surface text-ink ring-2 ring-sunken'
                       : 'border border-line-strong bg-sunken text-ink-3'
                   }`}
                 >
@@ -75,7 +75,7 @@ export function StepRail({
                 <span
                   className={`hidden md:inline font-medium text-[12px] ${
                     isCurrent
-                      ? 'text-cobalt font-semibold'
+                      ? 'text-ink font-semibold'
                       : isDone
                       ? 'text-ink'
                       : 'text-ink-3'

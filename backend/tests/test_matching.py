@@ -225,7 +225,7 @@ def test_unavailable_creators_remain_visible(client, sample_campaign):
     assert res.status_code == 200
     results = res.get_json()["results"]
 
-    # Check for creator c-test-2 who is unavailable in test fixtures
+    # Check for creator test-creator-2 who is unavailable in test fixtures
     unavailable_matches = [r for r in results if r["creator"]["availability"] is False]
     assert len(unavailable_matches) >= 1
     for unavail in unavailable_matches:

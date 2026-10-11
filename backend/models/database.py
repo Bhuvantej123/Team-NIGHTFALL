@@ -30,6 +30,9 @@ def init_db(database_uri: str) -> None:
     }
     if is_sqlite:
         engine_kwargs["connect_args"] = {"check_same_thread": False}
+        if ":memory:" in database_uri:
+            from sqlalchemy.pool import StaticPool
+            engine_kwargs["poolclass"] = StaticPool
     else:
         # PostgreSQL / Supabase pooler settings
         engine_kwargs["pool_recycle"] = 300

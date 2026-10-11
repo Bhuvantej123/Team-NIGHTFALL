@@ -25,9 +25,9 @@ def test_list_creators_success(client):
     assert isinstance(data, list)
     assert len(data) == 3
     ids = [c["id"] for c in data]
-    assert "c-test-1" in ids
-    assert "c-test-2" in ids
-    assert "c-test-3" in ids
+    assert "test-creator-1" in ids
+    assert "test-creator-2" in ids
+    assert "test-creator-3" in ids
 
 
 # ── 2. Filtering by niche ──────────────────────────────────────────────────────
@@ -37,7 +37,7 @@ def test_filter_by_niche(client):
     assert res.status_code == 200
     data = res.get_json()
     assert len(data) == 1
-    assert data[0]["id"] == "c-test-2"
+    assert data[0]["id"] == "test-creator-2"
 
     # Match multiple with common niche "lifestyle"
     res2 = client.get("/api/creators?niche=LiFeStYlE")
@@ -45,7 +45,7 @@ def test_filter_by_niche(client):
     data2 = res2.get_json()
     assert len(data2) == 2
     ids = {c["id"] for c in data2}
-    assert ids == {"c-test-1", "c-test-3"}
+    assert ids == {"test-creator-1", "test-creator-3"}
 
 
 # ── 3. Filtering by platform ──────────────────────────────────────────────────
@@ -55,14 +55,14 @@ def test_filter_by_platform(client):
     assert res.status_code == 200
     data = res.get_json()
     assert len(data) == 1
-    assert data[0]["id"] == "c-test-2"
+    assert data[0]["id"] == "test-creator-2"
 
     res_ig = client.get("/api/creators?platform=INSTAGRAM")
     assert res_ig.status_code == 200
     data_ig = res_ig.get_json()
     assert len(data_ig) == 2
     ids = {c["id"] for c in data_ig}
-    assert ids == {"c-test-1", "c-test-3"}
+    assert ids == {"test-creator-1", "test-creator-3"}
 
 
 # ── 4. Filtering by skill ──────────────────────────────────────────────────────
@@ -72,13 +72,26 @@ def test_filter_by_skill(client):
     assert res.status_code == 200
     data = res.get_json()
     assert len(data) == 1
-    assert data[0]["id"] == "c-test-2"
+    assert data[0]["id"] == "test-creator-2"
 
     res2 = client.get("/api/creators?skill=video")
     assert res2.status_code == 200
     data2 = res2.get_json()
     assert len(data2) == 1
-    assert data2[0]["id"] == "c-test-1"
+    assert data2[0]["id"] == "test-creator-1"
+
+
+# ── 4b. Filtering by creative discipline ──────────────────────────────────────
+def test_filter_by_discipline(client):
+    # test-creator-1 has video editing/motion design -> matches 'AI Video Ad Creator' or 'Motion Graphics Artist'
+    res_disc = client.get("/api/creators?discipline=motion+graphics+artist")
+    assert res_disc.status_code == 200
+    data = res_disc.get_json()
+    ids = [c["id"] for c in data]
+    assert "test-creator-1" in ids or "test-creator-2" in ids
+    for c in data:
+        assert "disciplines" in c
+        assert any("motion graphics artist" in d.lower() for d in c["disciplines"])
 
 
 # ── 5. Filtering by availability, both true and false ──────────────────────────
@@ -96,26 +109,26 @@ def test_filter_by_availability_false(client):
     assert res.status_code == 200
     data = res.get_json()
     assert len(data) == 1
-    assert data[0]["id"] == "c-test-2"
+    assert data[0]["id"] == "test-creator-2"
     assert data[0]["availability"] is False
 
 
 # ── 6. Combining multiple filters (AND semantics) ──────────────────────────────
 def test_combine_multiple_filters(client):
-    # niche=lifestyle AND available=true AND platform=instagram -> c-test-1 and c-test-3
+    # niche=lifestyle AND available=true AND platform=instagram -> test-creator-1 and test-creator-3
     res = client.get("/api/creators?niche=lifestyle&available=true&platform=instagram")
     assert res.status_code == 200
     data = res.get_json()
     assert len(data) == 2
 
-    # Add skill=virtual -> only c-test-3
+    # Add skill=virtual -> only test-creator-3
     res_refined = client.get(
         "/api/creators?niche=lifestyle&available=true&platform=instagram&skill=virtual"
     )
     assert res_refined.status_code == 200
     data_refined = res_refined.get_json()
     assert len(data_refined) == 1
-    assert data_refined[0]["id"] == "c-test-3"
+    assert data_refined[0]["id"] == "test-creator-3"
 
     # Conflicting criteria -> empty list
     res_conflict = client.get(
@@ -128,35 +141,35 @@ def test_combine_multiple_filters(client):
 # ── 7. Case-insensitive free-text search ──────────────────────────────────────
 def test_case_insensitive_text_search(client):
     # Match display name
-    res_name = client.get("/api/creators?q=elena")
+    res_name = client.get("/api/creators?q=kavita")
     assert res_name.status_code == 200
     data = res_name.get_json()
     assert len(data) == 1
-    assert data[0]["id"] == "c-test-1"
+    assert data[0]["id"] == "test-creator-1"
 
     # Match bio
     res_bio = client.get("/api/creators?q=synthetic+voice")
     assert res_bio.status_code == 200
     data_bio = res_bio.get_json()
     assert len(data_bio) == 1
-    assert data_bio[0]["id"] == "c-test-2"
+    assert data_bio[0]["id"] == "test-creator-2"
 
     # Match style_tag "editorial"
     res_tag = client.get("/api/creators?q=EDITORIAL")
     assert res_tag.status_code == 200
     data_tag = res_tag.get_json()
     assert len(data_tag) == 1
-    assert data_tag[0]["id"] == "c-test-3"
+    assert data_tag[0]["id"] == "test-creator-3"
 
 
 # ── 8. Retrieving an existing creator by ID ───────────────────────────────────
 def test_get_creator_by_id_success(client):
-    res = client.get("/api/creators/c-test-1")
+    res = client.get("/api/creators/test-creator-1")
     assert res.status_code == 200
     data = res.get_json()
-    assert data["id"] == "c-test-1"
-    assert data["display_name"] == "Elena Rostova"
-    assert data["handle"] == "@elena_ai"
+    assert data["id"] == "test-creator-1"
+    assert data["display_name"] == "Kavita Rao"
+    assert data["handle"] == "@kavita_visuals"
     assert data["starting_price"] == 600.0
     assert data["availability"] is True
     assert isinstance(data["platforms"], list)
@@ -260,7 +273,7 @@ def test_reseeding_preserves_campaign_workflow_matches(tmp_path):
         match_record = MatchResultModel(
             id=match_id,
             campaign_id=camp_id,
-            creator_id="c-test-1",
+            creator_id="test-creator-1",
             creator_snapshot=json.dumps(SAMPLE_TEST_CREATORS[0]),
             total_score=88.5,
             score_breakdown=json.dumps({"skill_niche_relevance": 0.9}),

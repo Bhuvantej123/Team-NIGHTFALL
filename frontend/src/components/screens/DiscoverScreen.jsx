@@ -69,10 +69,17 @@ export function DiscoverScreen({
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('works');
+  const [selectedDiscipline, setSelectedDiscipline] = useState('All');
   const [selectedStyle, setSelectedStyle] = useState('All');
   const [commercialOnly, setCommercialOnly] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasSimulatedError, setHasSimulatedError] = useState(false);
+
+  const handleDisciplineChange = (discipline) => {
+    setSelectedDiscipline(discipline);
+    setIsRefreshing(true);
+    setTimeout(() => setIsRefreshing(false), 300);
+  };
 
   const handleStyleChange = (style) => {
     setSelectedStyle(style);
@@ -115,6 +122,7 @@ export function DiscoverScreen({
       const tools = (w.tools || []).map((t) => t.toLowerCase());
       const role = (w.creator?.role || '').toLowerCase();
       const family = (w.creator?.family || '').toLowerCase();
+      const disciplines = (w.creator?.disciplines || []).map((d) => d.toLowerCase());
 
       const matchesSearch =
         !q ||
@@ -122,7 +130,12 @@ export function DiscoverScreen({
         creatorName.includes(q) ||
         role.includes(q) ||
         family.includes(q) ||
-        tools.some((t) => t.includes(q));
+        tools.some((t) => t.includes(q)) ||
+        disciplines.some((d) => d.includes(q));
+
+      const matchesDiscipline =
+        selectedDiscipline === 'All' ||
+        disciplines.includes(selectedDiscipline.toLowerCase());
 
       const matchesStyle =
         selectedStyle === 'All' ||
@@ -134,9 +147,9 @@ export function DiscoverScreen({
       const matchesCommercial =
         !commercialOnly || (w.rightsStatus && w.rightsStatus.includes('COMMERCIAL'));
 
-      return matchesSearch && matchesStyle && matchesCommercial;
+      return matchesSearch && matchesDiscipline && matchesStyle && matchesCommercial;
     });
-  }, [allWorks, searchQuery, selectedStyle, commercialOnly]);
+  }, [allWorks, searchQuery, selectedDiscipline, selectedStyle, commercialOnly]);
 
   // Filtered creators
   const filteredCreators = useMemo(() => {
@@ -146,13 +159,19 @@ export function DiscoverScreen({
       const role = (c.role || '').toLowerCase();
       const family = (c.family || '').toLowerCase();
       const tools = (c.tools || []).map((t) => t.toLowerCase());
+      const disciplines = (c.disciplines || []).map((d) => d.toLowerCase());
 
       const matchesSearch =
         !q ||
         name.includes(q) ||
         role.includes(q) ||
         family.includes(q) ||
-        tools.some((t) => t.includes(q));
+        tools.some((t) => t.includes(q)) ||
+        disciplines.some((d) => d.includes(q));
+
+      const matchesDiscipline =
+        selectedDiscipline === 'All' ||
+        disciplines.includes(selectedDiscipline.toLowerCase());
 
       const matchesStyle =
         selectedStyle === 'All' ||
@@ -163,9 +182,18 @@ export function DiscoverScreen({
 
       const matchesCommercial = !commercialOnly || c.commercialDeclared;
 
-      return matchesSearch && matchesStyle && matchesCommercial;
+      return matchesSearch && matchesDiscipline && matchesStyle && matchesCommercial;
     });
-  }, [creators, searchQuery, selectedStyle, commercialOnly]);
+  }, [creators, searchQuery, selectedDiscipline, selectedStyle, commercialOnly]);
+
+  const disciplineChips = [
+    'All',
+    'AI Filmmaker',
+    'AI Animator',
+    'AI Video Ad Creator',
+    'Motion Graphics Artist',
+    'AI Visual Artist',
+  ];
 
   const styleChips = [
     'All',
@@ -211,7 +239,7 @@ export function DiscoverScreen({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by aesthetic family, tool (e.g. ComfyUI, Midjourney), or creator name..."
-              className="w-full h-12 pl-12 pr-4 rounded-ctl bg-surface border border-line-strong text-[15px] text-ink placeholder:text-ink-3 focus:border-cobalt focus:outline-none font-ui"
+              className="w-full h-12 pl-12 pr-4 rounded-ctl bg-surface border border-line-strong text-[15px] text-ink placeholder:text-ink-3 focus:border-ink focus:outline-none font-ui"
             />
           </div>
 
@@ -222,7 +250,7 @@ export function DiscoverScreen({
               title="Refresh discovery ledger"
               className="p-2 rounded-ctl text-ink-3 hover:text-ink hover:bg-sunken transition-colors cursor-pointer"
             >
-              <RefreshCw size={15} className={isRefreshing ? 'animate-spin text-cobalt' : ''} />
+              <RefreshCw size={15} className={isRefreshing ? 'animate-spin text-ink' : ''} />
             </button>
             <button
               onClick={() => (hasSimulatedError ? setHasSimulatedError(false) : handleSimulatedErrorToggle())}
@@ -238,46 +266,65 @@ export function DiscoverScreen({
           </div>
         </div>
 
-        {/* Style Filter Chips and Works/Creators Tab Toggle */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
+        {/* Discipline and Style Filter Chips and Works/Creators Tab Toggle */}
+        <div className="space-y-2.5 border-b border-line pb-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[11px] uppercase text-ink-3 mr-1">STYLE:</span>
-            {styleChips.map((style) => (
+            <span className="font-mono text-[11px] uppercase text-ink-3 mr-1">DISCIPLINE:</span>
+            {disciplineChips.map((disc) => (
               <button
-                key={style}
-                onClick={() => handleStyleChange(style)}
+                key={disc}
+                onClick={() => handleDisciplineChange(disc)}
                 className={`px-2.5 py-1 rounded-ctl text-[11px] font-mono transition-colors cursor-pointer ${
-                  selectedStyle === style
-                    ? 'bg-cobalt-tint border border-cobalt text-cobalt font-semibold'
+                  selectedDiscipline === disc
+                    ? 'bg-ink text-surface border border-ink font-semibold'
                     : 'bg-surface border border-line text-ink-2 hover:border-line-strong'
                 }`}
               >
-                {style}
+                {disc}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-1 bg-sunken p-1 rounded-ctl border border-line self-start sm:self-auto flex-shrink-0">
-            <button
-              onClick={() => setActiveTab('works')}
-              className={`px-3 py-1 rounded-[4px] font-mono text-[11px] uppercase transition-colors cursor-pointer ${
-                activeTab === 'works'
-                  ? 'bg-surface text-ink font-semibold shadow-sm'
-                  : 'text-ink-2 hover:text-ink'
-              }`}
-            >
-              Works ({filteredWorks.length})
-            </button>
-            <button
-              onClick={() => setActiveTab('creators')}
-              className={`px-3 py-1 rounded-[4px] font-mono text-[11px] uppercase transition-colors cursor-pointer ${
-                activeTab === 'creators'
-                  ? 'bg-surface text-ink font-semibold shadow-sm'
-                  : 'text-ink-2 hover:text-ink'
-              }`}
-            >
-              Creators ({filteredCreators.length})
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-[11px] uppercase text-ink-3 mr-1">STYLE:</span>
+              {styleChips.map((style) => (
+                <button
+                  key={style}
+                  onClick={() => handleStyleChange(style)}
+                  className={`px-2.5 py-1 rounded-ctl text-[11px] font-mono transition-colors cursor-pointer ${
+                    selectedStyle === style
+                      ? 'bg-ink text-surface border border-ink font-semibold'
+                      : 'bg-surface border border-line text-ink-2 hover:border-line-strong'
+                  }`}
+                >
+                  {style}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1 bg-sunken p-1 rounded-ctl border border-line self-start sm:self-auto flex-shrink-0">
+              <button
+                onClick={() => setActiveTab('works')}
+                className={`px-3 py-1 rounded-[4px] font-mono text-[11px] uppercase transition-colors cursor-pointer ${
+                  activeTab === 'works'
+                    ? 'bg-surface text-ink font-semibold shadow-sm'
+                    : 'text-ink-2 hover:text-ink'
+                }`}
+              >
+                Works ({filteredWorks.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('creators')}
+                className={`px-3 py-1 rounded-[4px] font-mono text-[11px] uppercase transition-colors cursor-pointer ${
+                  activeTab === 'creators'
+                    ? 'bg-surface text-ink font-semibold shadow-sm'
+                    : 'text-ink-2 hover:text-ink'
+                }`}
+              >
+                Creators ({filteredCreators.length})
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -369,7 +416,7 @@ export function DiscoverScreen({
                     title={`Click to view ${work.creator.name}'s followers, reels, photoshoots & details`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover/creator:border-cobalt transition-colors shadow-2xs">
+                      <div className="w-8 h-8 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover/creator:border-ink transition-colors shadow-2xs">
                         <img
                           src={work.creator.avatar}
                           alt={work.creator.name}
@@ -378,12 +425,12 @@ export function DiscoverScreen({
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-semibold text-ink text-[13px] group-hover/creator:text-cobalt transition-colors block leading-tight">
+                          <span className="font-semibold text-ink text-[13px] group-hover/creator:text-ink transition-colors block leading-tight">
                             {work.creator.name}
                           </span>
                           <ArrowUpRight
                             size={12}
-                            className="text-ink-3 group-hover/creator:text-cobalt transition-colors"
+                            className="text-ink-3 group-hover/creator:text-ink transition-colors"
                           />
                         </div>
                         <span className="text-[11px] text-ink-3 block truncate max-w-[150px]">
@@ -394,14 +441,14 @@ export function DiscoverScreen({
 
                     <div className="flex flex-col items-end gap-1 font-mono text-[10px]">
                       {work.creator.channel?.firstLastFollowers?.last ? (
-                        <span className="font-semibold text-ink bg-sunken px-2 py-0.5 rounded-[4px] border border-line flex items-center gap-1 group-hover/creator:border-cobalt/40 transition-colors">
+                        <span className="font-semibold text-ink bg-sunken px-2 py-0.5 rounded-[4px] border border-line flex items-center gap-1 group-hover/creator:border-ink/40 transition-colors">
                           <span className="w-1.5 h-1.5 rounded-full bg-verified" />
                           {work.creator.channel.firstLastFollowers.last.split(' ')[0]} Followers
                         </span>
                       ) : (
                         <span className="text-ink-3">Independent</span>
                       )}
-                      <span className="text-cobalt text-[9.5px] uppercase tracking-wider font-semibold bg-cobalt-tint/30 px-1.5 py-0.2 rounded-[3px]">
+                      <span className="text-ink text-[9.5px] uppercase tracking-wider font-semibold bg-sunken px-1.5 py-0.2 rounded-[3px]">
                         {work.creator.formats?.join(' · ') || 'Reels 9:16 · Photoshoots 4:5'}
                       </span>
                     </div>
@@ -438,7 +485,7 @@ export function DiscoverScreen({
                   className="flex items-start sm:items-center gap-4 cursor-pointer flex-1"
                   title={`Click to view ${creator.name}'s followers, reels, photoshoots & details`}
                 >
-                  <div className="w-14 h-14 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover:border-cobalt transition-colors">
+                  <div className="w-14 h-14 rounded-full overflow-hidden border border-line bg-sunken flex-shrink-0 group-hover:border-ink transition-colors">
                     <img
                       src={creator.avatar}
                       alt={creator.name}
@@ -448,9 +495,14 @@ export function DiscoverScreen({
 
                   <div className="space-y-1">
                     <div className="flex items-center gap-2.5 flex-wrap">
-                      <h3 className="font-ui font-semibold text-[17px] text-ink group-hover:text-cobalt transition-colors">
+                      <h3 className="font-ui font-semibold text-[17px] text-ink group-hover:text-ink transition-colors">
                         {creator.name}
                       </h3>
+                      {creator.primaryDiscipline && (
+                        <span className="font-mono text-[10.5px] uppercase font-semibold text-ink bg-sunken border border-line px-2 py-0.5 rounded-[3px]">
+                          {creator.primaryDiscipline}
+                        </span>
+                      )}
                       <FitLevelBadge level={creator.fitLevel || 'Strong'} />
                       {creator.channel?.firstLastFollowers?.last && (
                         <span className="font-mono text-[11px] font-semibold text-verified bg-verified/10 px-2 py-0.5 rounded-[3px] border border-verified/20">
@@ -483,7 +535,7 @@ export function DiscoverScreen({
                 <div className="flex items-center gap-2 self-start lg:self-center flex-shrink-0">
                   <button
                     onClick={() => handleCreatorClick(creator)}
-                    className="px-4 py-2 rounded-ctl bg-ink hover:bg-cobalt text-surface text-[12px] font-medium transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    className="px-4 py-2 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[12px] font-medium transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     <span>View Full Profile</span>
                     <ArrowRight size={13} />

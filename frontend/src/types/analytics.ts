@@ -36,15 +36,34 @@ export interface BrandCampaignOutcome {
   baseline_sales: number;
   post_sales: number;
   sales_lift_pct: number | null;
+  baseline_visits?: number;
+  post_visits?: number;
   traffic_lift_pct: number | null;
   link_clicks: number;
   conversions: number;
   conversion_rate_pct: number | null;
   roas_estimate: number | null;
+  roas_is_estimate?: boolean;
   attribution_method: string;
   data_source: string;
+  status?: string;
+  deliverables?: string;
+  content_type?: string;
+  provenance_label?: string;
+  verification_status?: string;
   is_simulated: boolean;
-  verified: boolean;
+  verified?: boolean;
+  is_verified?: boolean;
+  is_creator_reported?: boolean;
+  is_sample_demo?: boolean;
+  associated_portfolio_work?: {
+    id: string;
+    title: string;
+    content_type: string;
+    image_url?: string;
+    description?: string;
+    tags?: string[];
+  } | null;
 }
 
 export interface PortfolioMetaPiece {
@@ -74,6 +93,7 @@ export interface CreatorAnalyticsSummary {
   overall_growth_pct: number | null;
   periods_tracked: number;
   verified_campaigns_count: number;
+  has_collaborations?: boolean;
 }
 
 export interface CreatorAnalyticsPayload {

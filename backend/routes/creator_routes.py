@@ -35,6 +35,7 @@ def get_creators():
     skill = request.args.get("skill")
     available = request.args.get("available")
     q = request.args.get("q")
+    discipline = request.args.get("discipline")
 
     try:
         creators = list_creators(
@@ -43,6 +44,7 @@ def get_creators():
             skill=skill,
             available=available,
             q=q,
+            discipline=discipline,
         )
         return jsonify(creators), 200
     except CreatorValidationError as exc:

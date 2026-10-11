@@ -59,7 +59,7 @@ export function ShortlistStep({
   if (isLoading) {
     return (
       <div className="max-w-[1280px] mx-auto px-6 py-24 text-center space-y-3">
-        <Loader2 size={28} className="animate-spin text-cobalt mx-auto" />
+        <Loader2 size={28} className="animate-spin text-ink mx-auto" />
         <p className="font-mono text-[13px] text-ink">Loading campaign shortlist...</p>
       </div>
     );

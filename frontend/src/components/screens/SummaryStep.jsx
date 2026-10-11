@@ -158,7 +158,7 @@ Recorded via CreatorConnect AI Workflow Engine.`;
             type="button"
             onClick={handleMarkComplete}
             disabled={isCompleting || shortlistedCreators.length === 0}
-            className="px-5 py-2.5 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[13px] font-medium flex items-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[13px] font-medium flex items-center gap-2 shadow-xs transition-all cursor-pointer disabled:opacity-50"
           >
             {isCompleting ? (
               <>

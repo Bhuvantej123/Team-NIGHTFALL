@@ -30,7 +30,7 @@ export function CampaignActionBar({
             <button
               type="button"
               onClick={onBack}
-              className="inline-flex items-center gap-1.5 text-ink-2 hover:text-ink text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt rounded-ctl px-2 py-1 cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-ink-2 hover:text-ink text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ink rounded-ctl px-2 py-1 cursor-pointer"
             >
               <ArrowLeft size={14} strokeWidth={1.5} />
               <span>{backLabel}</span>
@@ -59,7 +59,7 @@ export function CampaignActionBar({
           )}
         </div>
 
-        {/* Right: Secondary Action (Compare) + Primary Cobalt Button */}
+        {/* Right: Secondary Action (Compare) + Primary Button */}
         <div className="flex items-center gap-3 flex-shrink-0">
           {secondaryAction}
 
@@ -68,10 +68,10 @@ export function CampaignActionBar({
               type="button"
               onClick={onForward}
               disabled={isForwardDisabled}
-              className={`inline-flex items-center gap-2 px-5 py-2 rounded-ctl font-medium text-[13px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt ${
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-ctl font-medium text-[13px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ink ${
                 isForwardDisabled
                   ? 'bg-sunken text-ink-3 cursor-not-allowed border border-line'
-                  : 'bg-cobalt hover:bg-cobalt-press text-white shadow-sm cursor-pointer'
+                  : 'bg-ink hover:bg-ink/85 text-surface shadow-sm cursor-pointer'
               }`}
             >
               <span>{forwardLabel}</span>

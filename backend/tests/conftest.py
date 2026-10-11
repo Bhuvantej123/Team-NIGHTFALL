@@ -4,6 +4,11 @@ Pytest fixtures shared across all test files.
 P1 (and P4 for test authoring) use these fixtures.
 """
 
+import os
+
+# Guarantee tests run strictly in-memory and NEVER connect to or pollute external databases
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+
 import pytest
 from backend.app import create_app
 from backend.config import Config
@@ -20,15 +25,15 @@ class TestConfig(Config):
 
 SAMPLE_TEST_CREATORS = [
     {
-        "id": "c-test-1",
-        "display_name": "Elena Rostova",
-        "handle": "@elena_ai",
+        "id": "test-creator-1",
+        "display_name": "Kavita Rao",
+        "handle": "@kavita_visuals",
         "bio": "Photorealistic AI visual director creating high-end tech commercials.",
         "skills": ["video editing", "prompt engineering", "motion design"],
         "ai_tools": ["Midjourney", "Runway"],
         "niches": ["tech", "lifestyle"],
         "platforms": [
-            {"name": "instagram", "handle": "@elena_ai", "url": "https://instagram.com/elena_ai", "follower_count": 40000}
+            {"name": "instagram", "handle": "@kavita_visuals", "url": "https://instagram.com/kavita_visuals", "follower_count": 40000}
         ],
         "portfolio_items": [
             {"id": "pi-1", "title": "Tech Reel", "description": "AI reel", "platform": "instagram", "content_url": None, "thumbnail_url": None, "tags": ["tech"]}
@@ -41,16 +46,16 @@ SAMPLE_TEST_CREATORS = [
         "created_at": "2026-01-01T00:00:00Z",
     },
     {
-        "id": "c-test-2",
-        "display_name": "Marcus Vance",
-        "handle": "@vance_gaming",
+        "id": "test-creator-2",
+        "display_name": "Rishi Verma",
+        "handle": "@rishi_gaming",
         "bio": "Narrative gaming shorts and synthetic voice acting for indie games.",
         "skills": ["3D rendering", "AI voiceover"],
         "ai_tools": ["ElevenLabs", "Blender"],
         "niches": ["gaming", "entertainment"],
         "platforms": [
-            {"name": "tiktok", "handle": "@vance_gaming", "url": "https://tiktok.com/@vance_gaming", "follower_count": 80000},
-            {"name": "youtube", "handle": "@vance_media", "url": "https://youtube.com/@vance_media", "follower_count": 50000},
+            {"name": "tiktok", "handle": "@rishi_gaming", "url": "https://tiktok.com/@rishi_gaming", "follower_count": 80000},
+            {"name": "youtube", "handle": "@rishi_media", "url": "https://youtube.com/@rishi_media", "follower_count": 50000},
         ],
         "portfolio_items": [],
         "style_tags": ["energetic", "humorous"],
@@ -61,15 +66,15 @@ SAMPLE_TEST_CREATORS = [
         "created_at": "2026-01-02T00:00:00Z",
     },
     {
-        "id": "c-test-3",
-        "display_name": "Aria Chen",
-        "handle": "@aria_fashion",
+        "id": "test-creator-3",
+        "display_name": "Tara Sen",
+        "handle": "@tara_fashion",
         "bio": "Editorial digital styling and virtual lookbooks for sustainable fashion.",
         "skills": ["virtual fashion", "copywriting"],
         "ai_tools": ["Stable Diffusion"],
         "niches": ["fashion", "lifestyle"],
         "platforms": [
-            {"name": "instagram", "handle": "@aria_fashion", "url": "https://instagram.com/aria_fashion", "follower_count": 60000}
+            {"name": "instagram", "handle": "@tara_fashion", "url": "https://instagram.com/tara_fashion", "follower_count": 60000}
         ],
         "portfolio_items": [],
         "style_tags": ["minimalist", "editorial"],

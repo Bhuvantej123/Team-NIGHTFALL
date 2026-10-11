@@ -176,6 +176,37 @@ def get_creator_analytics(creator_id: str) -> Dict[str, Any]:
         total_interactions = total_likes_sum + total_comments_sum + total_shares_sum + total_saves_sum
         avg_engagement = round((total_interactions / total_reach_sum) * 100.0, 2)
 
+    # Canonical portfolio mapping for documented brand deals
+    CAMPAIGN_PORTFOLIO_MAP = {
+        "camp-001": "portfolio-004",  # AuraSound Labs -> Aura Pulse: Wireless Audio Launch Ad
+        "camp-002": "portfolio-003",  # CyberForge Dynamics -> Neon Monolith: Brand Identity Film
+        "camp-003": "portfolio-008",  # Velluto Cosmetics -> Metamorphic Blooms: Avant-Garde Beauty Reel
+        "camp-004": "portfolio-010",  # SpiceCraft Artisanal -> Saffron Smoke: Biryani Slow-Motion Masterpiece
+        "camp-005": "portfolio-019",  # PulseEnergy Drinks -> Stop Scrolling: 3-Second Viral Hook Series
+        "camp-006": "portfolio-025",  # QuantumEdge Displays -> Titan One: Flagship Smartphone CGI Reveal
+        "camp-007": "portfolio-027",  # Maison d'Ambre -> Oud Mystique: Luxury Perfume Moodscape
+        "camp-008": "portfolio-014",  # HyperGlide Peripherals -> Vortex Major: Esports Championship Stinger
+        "camp-009": "portfolio-034",  # Solaria Eco-Resorts -> Cliffside Serenity: Amalfi Coast Boutique Stay
+        "camp-010": "portfolio-022",  # StellarMind Learning -> Journey to the Event Horizon: Astrophysics Explainer
+        "camp-011": "portfolio-035",  # Botanica Mixology -> Citrus Tempest: Cold-Brew Tonic Splash Commercial
+        "camp-012": "portfolio-015",  # ChibiCraft Studios -> Cloudbound: Shonen Anime Pilot Clip
+    }
+
+    CAMPAIGN_DELIVERABLES_MAP = {
+        "camp-001": "1x 3D Exploded Product Commercial (9:16) + 3x Instagram Stories with Promo Code Sticker",
+        "camp-002": "1x Dedicated 4K Cinematic Hardware Showcase (16:9) + Pinned UTM Tracking Link",
+        "camp-003": "2x Haute Editorial Beauty Reels (9:16) + Interactive Discount Code Callout",
+        "camp-004": "1x Macro Food Slow-Motion Reel (9:16) + Recipe Carousel Integration",
+        "camp-005": "3x High-Retention Short-Form Hooks (9:16) with Sonic Beat-Sync Branding",
+        "camp-006": "1x Hardware Technical Teardown (16:9 4K) + Multi-Touch Channel Links",
+        "camp-007": "1x Luxury Fragrance Moodscape Reel (9:16) + Story Highlight Integration",
+        "camp-008": "1x Esports Gameplay Stinger Integration (16:9) + Pinned Community Comment",
+        "camp-009": "2x Hospitality Cinematic Experience Reels (9:16) + Direct Booking Bio Link",
+        "camp-010": "1x Animated Astrophysics Explainer (16:9) + Syllabus Enrollment UTM Link",
+        "camp-011": "1x High-Speed Beverage Fluid Splash Reel (9:16) + Trial Discount Code",
+        "camp-012": "2x Shonen Anime Character Animation Shorts (9:16) + Presale Link Stickers",
+    }
+
     # Process Brand Collaborations
     processed_campaigns = []
     for c in campaign_records:
@@ -186,6 +217,7 @@ def get_creator_analytics(creator_id: str) -> Dict[str, Any]:
         clicks = c.get("link_clicks") or 0
         base_visits = c.get("baseline_website_visits") or 0
         post_visits = c.get("post_campaign_website_visits") or 0
+        camp_id = c.get("campaign_id")
 
         sales_lift_pct = None
         if base_sales > 0:
@@ -199,36 +231,63 @@ def get_creator_analytics(creator_id: str) -> Dict[str, Any]:
         if clicks > 0:
             cvr_pct = round((conversions / clicks) * 100.0, 2)
 
-        # Approximate ROAS based on attributed conversions
-        # Assuming average order value in INR derived from spend / conversions benchmark
+        # Conservative ROAS proxy: (conversions * estimated AOV) / spend
         roas = None
         if spend > 0 and conversions > 0:
-            # Conservative ROAS proxy: (conversions * estimated AOV) / spend
-            # Aura Pods ~$3,500 INR, standard AOV estimate
             est_aov = 2500
             roas = round((conversions * est_aov) / spend, 2)
 
+        # Associate verified portfolio piece if available
+        port_id = CAMPAIGN_PORTFOLIO_MAP.get(camp_id)
+        associated_port = None
+        if port_id:
+            for p in portfolio_records:
+                if p.get("id") == port_id:
+                    associated_port = {
+                        "id": p.get("id"),
+                        "title": p.get("title"),
+                        "content_type": p.get("content_type"),
+                        "image_url": p.get("image_url"),
+                        "description": p.get("description"),
+                        "tags": p.get("tags", []),
+                    }
+                    break
+
+        deliverables = CAMPAIGN_DELIVERABLES_MAP.get(camp_id) or "1x Sponsored Video Deliverable + Dedicated Tracking Link"
+        content_type = associated_port.get("content_type") if associated_port else (c.get("platform", "video") + "_campaign")
+
         processed_campaigns.append({
-            "campaign_id": c.get("campaign_id"),
+            "campaign_id": camp_id,
             "brand": c.get("fictional_brand"),
             "product": c.get("fictional_product"),
             "objective": c.get("campaign_objective"),
             "platform": c.get("platform"),
             "start_date": c.get("campaign_start"),
             "end_date": c.get("campaign_end"),
+            "status": "Completed",
+            "deliverables": deliverables,
+            "content_type": content_type,
             "spend_inr": spend,
             "baseline_sales": base_sales,
             "post_sales": post_sales,
             "sales_lift_pct": sales_lift_pct,
+            "baseline_visits": base_visits,
+            "post_visits": post_visits,
             "traffic_lift_pct": traffic_lift_pct,
             "link_clicks": clicks,
             "conversions": conversions,
             "conversion_rate_pct": cvr_pct,
             "roas_estimate": roas,
+            "roas_is_estimate": True,
             "attribution_method": c.get("attribution_method"),
             "data_source": c.get("data_source"),
+            "provenance_label": "Sample / Demo Dataset (Simulated Merchant Audit)",
+            "verification_status": "Audited Telemetry",
             "is_simulated": c.get("is_simulated", True),
-            "verified": True,
+            "is_verified": True,
+            "is_creator_reported": False,
+            "is_sample_demo": True,
+            "associated_portfolio_work": associated_port,
         })
 
     # Multi-period growth trends (3M, 6M, 12M)
@@ -242,6 +301,7 @@ def get_creator_analytics(creator_id: str) -> Dict[str, Any]:
     return {
         "creator_id": creator_id,
         "has_telemetry": has_telemetry,
+        "has_collaborations": len(processed_campaigns) > 0,
         "summary": {
             "current_followers": current_followers,
             "total_views": total_views_sum,
@@ -250,6 +310,8 @@ def get_creator_analytics(creator_id: str) -> Dict[str, Any]:
             "overall_growth_pct": overall_growth_pct,
             "periods_tracked": len(processed_periods),
             "verified_campaigns_count": len(processed_campaigns),
+            "total_verified_sponsorships": len(processed_campaigns),
+            "has_collaborations": len(processed_campaigns) > 0,
         },
         "growth_history": processed_periods,
         "past_campaigns": processed_campaigns,

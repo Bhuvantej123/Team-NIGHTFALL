@@ -52,6 +52,8 @@ export interface UiCreator {
   commercialDeclared: boolean;
   rightsVerification: 'unverified' | 'verified' | 'simulated';
   tools: string[];
+  disciplines: string[];
+  primaryDiscipline: string;
   platforms: string[];
   formats: string[];
   workflowSteps: Array<{ name: string; type: 'human' | 'model'; tool: string }>;
@@ -125,12 +127,95 @@ export interface UiMatchedCreator {
   evidence: Record<string, string[]>;
   explanation: string;
   formats: string[];
+  disciplines?: string[];
+  primaryDiscipline?: string;
   platforms: string[];
   commercialDeclared: boolean;
   turnaround: string;
   location: string;
   rawMatch: MatchResult;
   rawCreator: CreatorProfile;
+}
+
+export const DISCIPLINE_RULES: Array<[string, string[]]> = [
+  [
+    'AI Filmmaker',
+    [
+      'filmmaker', 'generative director', 'cinematic ai', 'speculative documentarian',
+      'documentary', 'cinematography', 'camera motion', 'sci-fi & speculative fiction',
+      'brand storytelling', 'cinematic_video', 'short_film', 'brand_film',
+      'environmental_short', 'macro_documentary', 'nature_documentary', 'film director',
+      'generative video direction'
+    ]
+  ],
+  [
+    'AI Animator',
+    [
+      'animator', 'animation', 'character animation', 'cel-shading', 'anime',
+      'motion comic', 'character lore animation', 'pika', 'liveportrait',
+      'animated_loop', 'animated_short', 'anime_short', 'biomedical_animation',
+      'character_intro', 'medical_device_vis', 'cellular mechanism animation'
+    ]
+  ],
+  [
+    'AI Video Ad Creator',
+    [
+      'commercial', 'product commercial', 'video ad', 'e-commerce video',
+      'launch ad', 'short-form hook', 'viral reels', 'hardware_commercial',
+      'product_commercial', 'automotive_commercial', 'beverage_commercial',
+      'coffee_commercial', 'social_ad', 'short_form_reel', 'commercial video production',
+      'e-commerce video ads', 'ai product advertisements'
+    ]
+  ],
+  [
+    'Motion Graphics Artist',
+    [
+      'motion graphics', 'motion design', 'kinetic typography', 'infographic motion',
+      'parallax depth', 'esports_motion', 'motion_graphic', 'motion comic animation',
+      'scientific visualization', '3d rendering', 'culinary motion graphics',
+      'esports motion graphics'
+    ]
+  ],
+  [
+    'AI Visual Artist',
+    [
+      'couture', 'virtual fashion', 'digital runway', 'editorial photography',
+      'visual artist', 'art director', 'style transfer', 'image generation',
+      'beauty_editorial', 'couture_lookbook', 'jewelry_editorial', 'luxury_campaign',
+      'runway_presentation', 'virtual_lookbook', 'macro texture generation',
+      'luxury visual direction', 'editorial portraiture'
+    ]
+  ],
+];
+
+export function deriveDisciplinesForCreator(creator: any): string[] {
+  if (Array.isArray(creator?.disciplines) && creator.disciplines.length > 0) {
+    return creator.disciplines;
+  }
+  const skills = (creator?.skills || []).map((s: string) => s.toLowerCase());
+  const niches = (creator?.niches || []).map((n: string) => n.toLowerCase());
+  const tools = (creator?.ai_tools || creator?.tools || []).map((t: string) => t.toLowerCase());
+  const styles = (creator?.style_tags || []).map((st: string) => st.toLowerCase());
+  const bio = (creator?.bio || '').toLowerCase();
+  const headline = (creator?.headline || '').toLowerCase();
+  const evidence = (creator?.portfolio_evidence || '').toLowerCase();
+
+  const portfolioTexts: string[] = [];
+  (creator?.portfolio_items || creator?.portfolio || []).forEach((item: any) => {
+    if (item.title) portfolioTexts.push(item.title.toLowerCase());
+    if (item.description) portfolioTexts.push(item.description.toLowerCase());
+    if (Array.isArray(item.tags)) portfolioTexts.push(...item.tags.map((t: string) => t.toLowerCase()));
+    if (item.content_type) portfolioTexts.push(item.content_type.toLowerCase());
+  });
+
+  const corpus = [bio, headline, evidence, ...skills, ...niches, ...tools, ...styles, ...portfolioTexts].join(' ');
+  const matched: string[] = [];
+  for (const [discName, keywords] of DISCIPLINE_RULES) {
+    if (keywords.some((kw) => corpus.includes(kw))) {
+      matched.push(discName);
+    }
+  }
+  return matched.length > 0 ? matched : ['AI Visual Artist'];
 }
 
 /**
@@ -261,8 +346,10 @@ export function adaptCreatorProfileToUi(creator: CreatorProfile): UiCreator {
     commercialDeclared: true,
     rightsVerification: 'unverified',
     tools: tools,
+    disciplines: deriveDisciplinesForCreator(creator),
+    primaryDiscipline: deriveDisciplinesForCreator(creator)[0] || 'AI Visual Artist',
     platforms: (creator.platforms || []).map(p => p.name),
-    formats: ['Stills 4:5', 'Reels 9:16'],
+    formats: ['Stills 4:5', 'Reels 9:16', '16:9 Widescreen'],
     workflowSteps: workflowSteps,
     humanInvolvementLevel: 4,
     channel: {
@@ -412,7 +499,11 @@ export function adaptMatchResultToUi(result: MatchResult): UiMatchedCreator {
     scoreBreakdown: result.score_breakdown,
     evidence: result.evidence || {},
     explanation: result.explanation || '',
-    formats: ['Stills 4:5', 'Reels 9:16', '16:9'],
+    formats: ['Stills 4:5', 'Reels 9:16', '16:9 Widescreen'],
+    disciplines: (result.evidence?.disciplines || []).map(d => d.replace(/^Verified\s+/, '')).length > 0
+      ? (result.evidence?.disciplines || []).map(d => d.replace(/^Verified\s+/, ''))
+      : deriveDisciplinesForCreator(creator),
+    primaryDiscipline: (result.evidence?.disciplines?.[0] ? result.evidence.disciplines[0].replace(/^Verified\s+/, '') : deriveDisciplinesForCreator(creator)[0]) || 'AI Visual Artist',
     platforms,
     commercialDeclared: true,
     turnaround: '3-5 business days',

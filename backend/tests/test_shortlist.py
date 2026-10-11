@@ -191,7 +191,7 @@ def test_database_unique_constraint_enforced(matched_campaign):
 
 # ── 6. Unknown campaign returns 404 ───────────────────────────────────────────
 def test_unknown_campaign_returns_404(client):
-    res_post = client.post("/api/campaigns/non-existent-campaign/shortlist", json={"creator_id": "c-test-1"})
+    res_post = client.post("/api/campaigns/non-existent-campaign/shortlist", json={"creator_id": "test-creator-1"})
     assert res_post.status_code == 404
     assert res_post.get_json()["code"] == "NOT_FOUND"
 
@@ -199,7 +199,7 @@ def test_unknown_campaign_returns_404(client):
     assert res_get.status_code == 404
     assert res_get.get_json()["code"] == "NOT_FOUND"
 
-    res_del = client.delete("/api/campaigns/non-existent-campaign/shortlist/c-test-1")
+    res_del = client.delete("/api/campaigns/non-existent-campaign/shortlist/test-creator-1")
     assert res_del.status_code == 404
     assert res_del.get_json()["code"] == "NOT_FOUND"
 
@@ -227,7 +227,7 @@ def test_unmatched_creator_rejected_from_shortlist(client):
     cid = create_res.get_json()["id"]
 
     # Attempt to shortlist valid creator that has not been matched
-    res = client.post(f"/api/campaigns/{cid}/shortlist", json={"creator_id": "c-test-1"})
+    res = client.post(f"/api/campaigns/{cid}/shortlist", json={"creator_id": "test-creator-1"})
     assert res.status_code == 400
     err = res.get_json()
     assert err["code"] == "VALIDATION_ERROR"
@@ -237,7 +237,7 @@ def test_unmatched_creator_rejected_from_shortlist(client):
 # ── 9. Removing nonexistent entry returns 404 ────────────────────────────────
 def test_remove_nonexistent_entry_returns_404(client, matched_campaign):
     cid = matched_campaign["campaign_id"]
-    res = client.delete(f"/api/campaigns/{cid}/shortlist/c-test-2")
+    res = client.delete(f"/api/campaigns/{cid}/shortlist/test-creator-2")
     assert res.status_code == 404
     err = res.get_json()
     assert err["code"] == "NOT_FOUND"

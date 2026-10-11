@@ -206,7 +206,7 @@ export function BriefStep({
             <span className="w-1.5 h-1.5 rounded-full bg-verified" />
             <span>{campaign?.code || 'CAMPAIGN'} · BRIEF SPECIFICATION</span>
             <span className="text-line-strong">·</span>
-            <span className="uppercase text-cobalt font-medium">Provider: {providerLabel}</span>
+            <span className="uppercase text-ink font-medium">Provider: {providerLabel}</span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl text-ink leading-tight mt-1.5">
             {title || `${brandName} Creative Brief`}
@@ -222,21 +222,21 @@ export function BriefStep({
             type="button"
             onClick={onGenerateBrief}
             disabled={isGenerating}
-            className={`h-10 px-4 rounded-ctl text-[13px] font-medium flex items-center gap-2 border transition-all cursor-pointer ${
+            className={`group h-10 px-4 rounded-ctl text-[13px] font-medium flex items-center gap-2 border transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
               isGenerating
                 ? 'bg-sunken text-ink-3 border-line cursor-wait'
-                : 'bg-paper border-cobalt/40 text-cobalt hover:bg-cobalt-tint hover:border-cobalt'
+                : 'bg-surface border-line-strong hover:border-ink text-ink hover:bg-paper active:bg-sunken'
             }`}
             title="Generate structured brief with live Gemini AI"
           >
             {isGenerating ? (
               <>
-                <Loader2 size={14} className="animate-spin text-cobalt" />
+                <Loader2 size={14} className="animate-spin text-ink" />
                 <span>Generating with AI...</span>
               </>
             ) : (
               <>
-                <Sparkles size={14} className="text-cobalt" />
+                <Sparkles size={14} className="text-ink transition-transform duration-200 group-hover:scale-110 group-hover:rotate-6" />
                 <span>{providerLabel === 'user' ? 'Generate with AI' : 'Regenerate Brief'}</span>
               </>
             )}
@@ -247,11 +247,11 @@ export function BriefStep({
             type="button"
             onClick={handleProceed}
             disabled={saveStatus === 'saving' || isGenerating || isMatching}
-            className="h-10 px-5 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[13px] font-medium flex items-center gap-2 shadow-xs transition-all cursor-pointer disabled:opacity-60"
+            className="h-10 px-5 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[13px] font-medium flex items-center gap-2 shadow-xs transition-all cursor-pointer disabled:opacity-60"
           >
             {isMatching ? (
               <>
-                <Loader2 size={15} className="animate-spin text-white" />
+                <Loader2 size={15} className="animate-spin text-surface" />
                 <span>Finding Verified Matches...</span>
               </>
             ) : (
@@ -321,7 +321,7 @@ export function BriefStep({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Urban Performance Sneaker Drop"
-                className="w-full h-10 px-3.5 text-[14px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none transition-colors"
+                className="w-full h-10 px-3.5 text-[14px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none transition-colors"
               />
             </div>
 
@@ -384,7 +384,7 @@ export function BriefStep({
               <span className="font-mono text-[11px] uppercase tracking-wider font-semibold text-ink">
                 02 · CREATIVE DIRECTION & OBJECTIVES
               </span>
-              <span className="font-mono text-[10px] text-cobalt uppercase font-medium">
+              <span className="font-mono text-[10px] text-ink-3 uppercase font-medium">
                 AI REFINABLE (PATCH)
               </span>
             </div>
@@ -399,8 +399,46 @@ export function BriefStep({
                 onChange={(e) => setObjective(e.target.value)}
                 placeholder="Primary campaign objective (e.g., Drive product launch awareness and showcase all-weather durability)..."
                 rows={2}
-                className="w-full p-3 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none transition-colors resize-y leading-relaxed"
+                className="w-full p-3 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none transition-colors resize-y leading-relaxed"
               />
+            </div>
+
+            {/* Production Type & Creative Discipline */}
+            <div>
+              <label className="font-mono text-[10px] uppercase text-ink-3 block mb-1.5">
+                Production Type & Creative Discipline
+              </label>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  'AI Filmmaker / Cinematic Short',
+                  'AI Character Animation',
+                  'AI Video Commercial',
+                  'Motion Graphics Teaser',
+                  'Visual Concept Art',
+                ].map((prod) => {
+                  const isMatch = niches.includes(prod) || (style && style.toLowerCase().includes(prod.toLowerCase().split(' ')[0]));
+                  return (
+                    <button
+                      key={prod}
+                      type="button"
+                      onClick={() => {
+                        if (!niches.includes(prod)) {
+                          setNiches([...niches, prod]);
+                        } else {
+                          setNiches(niches.filter((n) => n !== prod));
+                        }
+                      }}
+                      className={`px-3 py-1.5 rounded-ctl font-mono text-[11px] transition-all cursor-pointer border ${
+                        isMatch
+                          ? 'bg-ink text-surface border-ink font-semibold'
+                          : 'bg-paper text-ink-2 border-line hover:border-line-strong'
+                      }`}
+                    >
+                      {prod}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -414,7 +452,7 @@ export function BriefStep({
                   value={style}
                   onChange={(e) => setStyle(e.target.value)}
                   placeholder="e.g. Photorealistic Industrial CGI"
-                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none transition-colors"
+                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none transition-colors"
                 />
               </div>
 
@@ -428,7 +466,7 @@ export function BriefStep({
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
                   placeholder="e.g. Sleek, energetic, high-performance"
-                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none transition-colors"
+                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -443,7 +481,7 @@ export function BriefStep({
                 value={callToAction}
                 onChange={(e) => setCallToAction(e.target.value)}
                 placeholder="e.g. Pre-order drop available at launch"
-                className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none transition-colors"
+                className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none transition-colors"
               />
             </div>
           </div>
@@ -510,6 +548,34 @@ export function BriefStep({
               </div>
             </div>
 
+            {/* Video Duration & Aspect Ratio Presets */}
+            <div className="space-y-2">
+              <label className="font-mono text-[10px] uppercase text-ink-3 block">
+                Deliverable Formats & Duration Presets
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: '+ 45s Cinematic Film (16:9, 4K)', val: '1x 45s Cinematic Film (16:9, 4K)' },
+                  { label: '+ 30s AI Animation Short (16:9)', val: '1x 30s AI Animation Short (16:9)' },
+                  { label: '+ 15s Kinetic Reel (9:16)', val: '2x 15s Kinetic Vertical Reels (9:16)' },
+                  { label: '+ 30s 3D Product Commercial (16:9)', val: '1x 30s 3D Product Commercial (16:9 4K)' },
+                ].map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => {
+                      if (!deliverables.includes(preset.val)) {
+                        setDeliverables([...deliverables, preset.val]);
+                      }
+                    }}
+                    className="px-2.5 py-1 rounded-ctl font-mono text-[11px] bg-paper hover:bg-sunken border border-line text-ink transition-colors cursor-pointer"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Deliverables chips */}
             <div className="space-y-2">
               <label className="font-mono text-[10px] uppercase text-ink-3 block">
@@ -565,21 +631,27 @@ export function BriefStep({
             </div>
           </div>
 
-          {/* Required Skills Selector */}
+          {/* Required Skills & Production Tools Selector */}
           <div className="p-6 rounded-card bg-surface border border-line shadow-2xs space-y-4">
             <span className="font-mono text-[11px] uppercase tracking-wider font-semibold text-ink block">
-              REQUIRED CREATOR SKILLS
+              REQUIRED CREATOR SKILLS & AI TOOLS
             </span>
             <div className="flex flex-wrap gap-1.5">
               {[
-                'Product Photography',
-                'Color Grading',
+                'Generative Video Direction',
+                'AI Character Animation',
+                'Runway Gen-3',
+                'Pika 2.0',
+                'Kling AI',
                 'ComfyUI',
-                'Midjourney',
+                'Midjourney v6',
+                'Flux.1',
+                'ElevenLabs',
+                'Topaz Video AI',
+                'Cinematic Storyboarding',
+                'Color Grading',
                 '3D CGI Renders',
-                'Macro Stills',
-                'Lighting Direction',
-                'Vertical Video',
+                'Motion Design',
               ].map((skill) => {
                 const isSelected = skills.includes(skill);
                 return (
@@ -589,7 +661,7 @@ export function BriefStep({
                     onClick={() => handleToggleSkill(skill)}
                     className={`px-3 py-1.5 rounded-ctl font-mono text-[11px] transition-all cursor-pointer flex items-center gap-1.5 border ${
                       isSelected
-                        ? 'bg-cobalt text-white border-cobalt font-semibold'
+                        ? 'bg-ink text-surface border-ink font-semibold'
                         : 'bg-paper text-ink-2 border-line hover:border-line-strong'
                     }`}
                   >

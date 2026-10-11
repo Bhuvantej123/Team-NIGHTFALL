@@ -118,7 +118,7 @@ export const CampaignsPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="max-w-[1400px] mx-auto px-6 py-24 flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-8 h-8 text-cobalt animate-spin" />
+        <Loader2 className="w-8 h-8 text-ink animate-spin" />
         <span className="font-mono text-[13px] text-ink-2 uppercase tracking-wider">
           Loading campaigns directory...
         </span>
@@ -196,7 +196,7 @@ export const CampaignsPage: React.FC = () => {
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                   placeholder="e.g. Velo-Stride, Nila Organics"
-                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none"
+                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none"
                 />
               </div>
 
@@ -210,7 +210,7 @@ export const CampaignsPage: React.FC = () => {
                   value={productDesc}
                   onChange={(e) => setProductDesc(e.target.value)}
                   placeholder="Describe product materials, campaign goal, or creative launch requirements..."
-                  className="w-full p-3 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none resize-y leading-relaxed"
+                  className="w-full p-3 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none resize-y leading-relaxed"
                 />
               </div>
 
@@ -224,7 +224,7 @@ export const CampaignsPage: React.FC = () => {
                   value={targetAudience}
                   onChange={(e) => setTargetAudience(e.target.value)}
                   placeholder="e.g. Gen Z streetwear collectors across Mumbai"
-                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none"
+                  className="w-full h-10 px-3.5 text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none"
                 />
               </div>
 
@@ -240,7 +240,7 @@ export const CampaignsPage: React.FC = () => {
                     required
                     value={budgetMin}
                     onChange={(e) => setBudgetMin(Number(e.target.value))}
-                    className="w-full h-10 px-3.5 font-mono text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none"
+                    className="w-full h-10 px-3.5 font-mono text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none"
                   />
                 </div>
 
@@ -255,7 +255,7 @@ export const CampaignsPage: React.FC = () => {
                     required
                     value={budgetMax}
                     onChange={(e) => setBudgetMax(Number(e.target.value))}
-                    className="w-full h-10 px-3.5 font-mono text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-cobalt focus:outline-none"
+                    className="w-full h-10 px-3.5 font-mono text-[13px] rounded-ctl bg-paper border border-line text-ink focus:border-ink focus:outline-none"
                   />
                 </div>
               </div>
@@ -302,7 +302,7 @@ export const CampaignsPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[13px] font-medium flex items-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[13px] font-medium flex items-center gap-2 shadow-xs transition-all cursor-pointer disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

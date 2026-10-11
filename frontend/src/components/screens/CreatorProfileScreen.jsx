@@ -125,6 +125,9 @@ export function CreatorProfileScreen({
 
   const basePrice = creator.minPrice || 8500;
 
+  const isFilmmaker = (creator.disciplines || []).some(d => d.toLowerCase().includes('filmmaker') || d.toLowerCase().includes('director'));
+  const isAnimator = (creator.disciplines || []).some(d => d.toLowerCase().includes('animator') || d.toLowerCase().includes('animation'));
+
   const tiers = {
     still: {
       id: 'still',
@@ -138,12 +141,19 @@ export function CreatorProfileScreen({
     },
     reel: {
       id: 'reel',
-      tag: 'VIDEO CGI',
-      title: 'Kinetic Vertical Reel (9:16)',
+      tag: isFilmmaker ? 'FILM MASTER' : isAnimator ? 'ANIMATION CUT' : 'VIDEO CGI',
+      title: isFilmmaker
+        ? 'Cinematic Widescreen Trailer (16:9)'
+        : isAnimator
+        ? 'Character Animation Clip (16:9 / 9:16)'
+        : 'Kinetic Vertical Reel (9:16)',
       multiplier: 1.45,
       turnaround: creator.turnaround || '3-5 days',
-      deliverables:
-        '1x 15-30s 4K 60fps Motion Reel + Seamless Audio Sync + 2x Cutdowns for Stories',
+      deliverables: isFilmmaker
+        ? '1x 30-45s 4K Generative Film Teaser + Character Staging + Synchronized Audio Score'
+        : isAnimator
+        ? '1x 20-30s Stylized Character Animation Clip + Cel/Motion Track + Sound FX Sync'
+        : '1x 15-30s 4K 60fps Motion Reel + Seamless Audio Sync + 2x Cutdowns for Stories',
       revisions: creator.revisions || 2,
     },
     suite: {
@@ -153,7 +163,7 @@ export function CreatorProfileScreen({
       multiplier: 2.4,
       turnaround: '6-8 days',
       deliverables:
-        '3x Hero Stills (4:5) + 2x Vertical Reels (9:16) + Color Grade LUTs + Full Commercial Rights',
+        '3x Hero Stills (4:5) + 2x Motion Assets (16:9 & 9:16) + Color Grade LUTs + Full Commercial Rights',
       revisions: (creator.revisions || 2) + 1,
     },
   };
@@ -364,9 +374,23 @@ export function CreatorProfileScreen({
             <h1 className="font-display text-3xl sm:text-4xl text-ink tracking-tight font-normal leading-none">
               {creator.name}
             </h1>
-            <p className="font-mono text-[11px] text-ink-2 uppercase tracking-wider font-semibold">
-              {creator.role || 'CGI & Generative Creative Director'}
-            </p>
+            <div className="flex items-center gap-2 flex-wrap pt-0.5">
+              <p className="font-mono text-[11px] text-ink-2 uppercase tracking-wider font-semibold">
+                {creator.role || 'CGI & Generative Creative Director'}
+              </p>
+              {creator.disciplines && creator.disciplines.length > 0 && (
+                <div className="flex items-center gap-1 flex-wrap">
+                  {creator.disciplines.map((d) => (
+                    <span
+                      key={d}
+                      className="font-mono text-[9.5px] uppercase font-semibold text-ink bg-sunken border border-line px-2 py-0.2 rounded-[3px]"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
             <p className="text-[13.5px] text-ink-2 leading-snug font-ui font-normal line-clamp-2 mt-1">
               {creator.bio ||
                 'Award-winning multidisciplinary director engineering synthetic brand campaigns and photorealistic editorial assets.'}

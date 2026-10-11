@@ -16,7 +16,7 @@ export function CropMarks({
   dark = false,
 }) {
   const strokeColor = selected
-    ? '#1447FF'
+    ? (dark ? '#F1EFE9' : '#14130F')
     : dark
     ? '#F1EFE9'
     : '#14130F';

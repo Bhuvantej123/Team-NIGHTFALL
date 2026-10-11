@@ -91,7 +91,14 @@ def create_app(config_object: type = Config) -> Flask:
 
 
 # Allow `flask run` and `python backend/app.py` from the project root
-app = create_app()
+# When imported during pytest, avoid eagerly instantiating global default app against Supabase
+import sys
+if "pytest" not in sys.modules and not any("pytest" in arg for arg in sys.argv):
+    app = create_app()
+else:
+    app = None
 
 if __name__ == "__main__":
+    if app is None:
+        app = create_app()
     app.run(port=5000, debug=True)

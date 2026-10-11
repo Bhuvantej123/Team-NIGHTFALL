@@ -174,7 +174,7 @@ export function CreatorSheet({
                   <span className="font-mono text-[10px] uppercase tracking-wider text-ink-3 block">
                     STARTING AT
                   </span>
-                  <div className="font-display text-2xl text-cobalt font-semibold tnum">
+                  <div className="font-display text-2xl text-ink font-semibold tnum">
                     {formatRupees(creator.minPrice, creator.currency)}
                   </div>
                   <span className="text-[10px] text-ink-3 font-mono block">
@@ -200,7 +200,7 @@ export function CreatorSheet({
                 <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-3 font-semibold">
                   WHAT {creator.name.toUpperCase()} CREATES
                 </span>
-                <span className="font-mono text-[10px] text-cobalt uppercase font-semibold">
+                <span className="font-mono text-[10px] text-ink uppercase font-semibold">
                   AVAILABLE DELIVERABLES
                 </span>
               </div>
@@ -213,7 +213,7 @@ export function CreatorSheet({
                       key={i}
                       className="p-3.5 rounded-ctl bg-surface border border-line hover:border-line-strong transition-all flex items-start gap-3.5"
                     >
-                      <div className="p-2 rounded-ctl bg-sunken border border-line text-cobalt flex-shrink-0 mt-0.5">
+                      <div className="p-2 rounded-ctl bg-sunken border border-line text-ink flex-shrink-0 mt-0.5">
                         <Icon size={16} strokeWidth={1.7} />
                       </div>
                       <div className="space-y-1 flex-1">
@@ -309,7 +309,7 @@ export function CreatorSheet({
                 onClose?.();
                 onViewFullProfile?.(creator);
               }}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white font-medium text-[13px] transition-colors shadow-sm cursor-pointer"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-ctl bg-ink hover:bg-ink/85 text-surface font-medium text-[13px] transition-colors shadow-sm cursor-pointer"
             >
               <span>View Full Profile & Analytics</span>
               <ArrowRight size={15} strokeWidth={1.5} />

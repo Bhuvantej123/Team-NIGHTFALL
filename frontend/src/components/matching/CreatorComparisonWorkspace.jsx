@@ -100,7 +100,7 @@ export function CreatorComparisonWorkspace({
         <header className="px-6 py-4 bg-surface border-b border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-cobalt font-semibold bg-cobalt-tint px-2 py-0.5 rounded-[2px] border border-cobalt/20">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-ink font-semibold bg-sunken px-2 py-0.5 rounded-[2px] border border-line">
                 MULTI-CREATOR ARBITRAGE
               </span>
               <span className="font-mono text-[10px] uppercase text-ink-3">
@@ -162,8 +162,13 @@ export function CreatorComparisonWorkspace({
                   <div className="min-w-0">
                     <div className="font-medium text-ink text-[13px] truncate flex items-center gap-1.5">
                       <span>{c.name}</span>
+                      {c.primaryDiscipline && (
+                        <span className="font-mono text-[8.5px] uppercase bg-sunken text-ink px-1 py-0.2 rounded-[2px] font-semibold">
+                          {c.primaryDiscipline}
+                        </span>
+                      )}
                       {isFitLeader && (
-                        <span className="font-mono text-[9px] bg-cobalt text-white px-1.5 py-0.2 rounded-[2px]" title="Highest algorithmic fit">
+                        <span className="font-mono text-[9px] bg-ink text-surface px-1.5 py-0.2 rounded-[2px]" title="Highest algorithmic fit">
                           Top Fit
                         </span>
                       )}
@@ -224,10 +229,18 @@ export function CreatorComparisonWorkspace({
                             {c.fitScore || 85}%
                           </span>
                         </div>
-                        <span className="font-mono text-[10px] uppercase font-semibold px-2 py-0.5 rounded-[2px] bg-cobalt-tint text-cobalt border border-cobalt/20">
+                        <span className="font-mono text-[10px] uppercase font-semibold px-2 py-0.5 rounded-[2px] bg-sunken text-ink border border-line">
                           {c.fitLevel || 'Strong'} Fit
                         </span>
                       </div>
+
+                      {/* Discipline & Deliverables */}
+                      {c.primaryDiscipline && (
+                        <div className="flex items-center justify-between p-2 rounded-ctl bg-paper border border-line font-mono text-[10.5px]">
+                          <span className="text-ink-3 uppercase text-[9px]">Discipline</span>
+                          <span className="text-ink font-semibold">{c.primaryDiscipline}</span>
+                        </div>
+                      )}
 
                       {/* KPI Grid */}
                       <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
@@ -242,7 +255,7 @@ export function CreatorComparisonWorkspace({
 
                         <div className="p-2.5 rounded-ctl bg-paper border border-line">
                           <span className="text-[9px] uppercase text-ink-3 block">Engagement</span>
-                          <span className="font-semibold text-cobalt text-[13px]">{engRate}</span>
+                          <span className="font-semibold text-ink text-[13px]">{engRate}</span>
                         </div>
 
                         <div className="p-2.5 rounded-ctl bg-paper border border-line">
@@ -320,7 +333,7 @@ export function CreatorComparisonWorkspace({
                               </div>
                               <div className="w-full h-1.5 bg-paper rounded-full overflow-hidden border border-line">
                                 <div
-                                  className="h-full bg-cobalt rounded-full"
+                                  className="h-full bg-ink rounded-full"
                                   style={{ width: `${Math.min(100, Math.max(15, (h.net_follower_change / 6000) * 100))}%` }}
                                 />
                               </div>
@@ -337,7 +350,7 @@ export function CreatorComparisonWorkspace({
                       <div className="p-3 rounded-ctl bg-paper border border-line space-y-2 font-mono text-[11px]">
                         <div className="flex justify-between">
                           <span className="text-ink-3">Avg Engagement Rate</span>
-                          <span className="font-semibold text-cobalt">
+                          <span className="font-semibold text-ink">
                             {a?.summary?.avg_engagement_rate ? `${a.summary.avg_engagement_rate}%` : '11.8%'}
                           </span>
                         </div>
@@ -423,7 +436,7 @@ export function CreatorComparisonWorkspace({
 
                       {/* Campaign Relevance Assessment */}
                       <div className="p-3 rounded-ctl bg-paper border border-line font-mono text-[10.5px] space-y-1">
-                        <span className="font-semibold text-cobalt block uppercase text-[9.5px]">
+                        <span className="font-semibold text-ink block uppercase text-[9.5px]">
                           Demographic Alignment
                         </span>
                         <p className="font-ui text-ink-2 leading-relaxed text-[11.5px]">
@@ -436,7 +449,7 @@ export function CreatorComparisonWorkspace({
               </div>
 
               <div className="p-3 rounded-ctl bg-surface border border-line font-mono text-[11px] text-ink-3 flex items-center gap-2">
-                <HelpCircle size={14} className="text-cobalt" />
+                <HelpCircle size={14} className="text-ink" />
                 <span>
                   Audience overlap between creators estimated via cross-channel interaction graphs. Direct mutual subscriber telemetry requires joint OAuth access.
                 </span>
@@ -456,8 +469,12 @@ export function CreatorComparisonWorkspace({
                     <div key={c.id} className="p-5 bg-surface rounded-card border border-line shadow-2xs space-y-4">
                       <div className="border-b border-line pb-2 flex items-center justify-between">
                         <span className="font-medium text-ink text-[14px]">{c.name}</span>
-                        <span className="font-mono text-[10px] bg-verified-wash text-verified font-semibold px-2 py-0.5 rounded-full border border-verified/30">
-                          {campaigns.length} Deal{campaigns.length === 1 ? '' : 's'} Audited
+                        <span className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                          campaigns.length > 0
+                            ? 'bg-verified-wash text-verified border-verified/30'
+                            : 'bg-paper text-ink-3 border-line'
+                        }`}>
+                          {campaigns.length > 0 ? `${campaigns.length} Deal${campaigns.length === 1 ? '' : 's'} Documented` : '0 Documented'}
                         </span>
                       </div>
 
@@ -466,11 +483,17 @@ export function CreatorComparisonWorkspace({
                           <div key={deal.campaign_id} className="p-3 rounded-ctl bg-paper border border-line space-y-2">
                             <div className="flex items-center justify-between">
                               <span className="font-medium text-ink text-[13px]">{deal.brand}</span>
-                              <span className="font-mono text-[10px] text-ink-3">{deal.platform}</span>
+                              <span className="font-mono text-[10px] text-ink-3 capitalize">{deal.platform}</span>
                             </div>
                             <div className="font-mono text-[11px] text-ink-3">
                               {deal.product}
                             </div>
+                            {deal.deliverables && (
+                              <div className="text-[10.5px] text-ink-2 font-mono bg-surface px-2 py-1 rounded border border-line/60">
+                                <span className="text-ink-3">Deliverables: </span>
+                                <span>{deal.deliverables}</span>
+                              </div>
+                            )}
                             <div className="grid grid-cols-2 gap-1.5 pt-1 font-mono text-[10px] border-t border-line/60">
                               <div>
                                 <span className="text-ink-3 block">Sales Lift</span>
@@ -478,22 +501,31 @@ export function CreatorComparisonWorkspace({
                               </div>
                               <div>
                                 <span className="text-ink-3 block">Attributed CVR</span>
-                                <span className="font-semibold text-cobalt">{deal.conversion_rate_pct}%</span>
+                                <span className="font-semibold text-ink">{deal.conversion_rate_pct}%</span>
                               </div>
                               <div>
                                 <span className="text-ink-3 block">Campaign Spend</span>
                                 <span className="font-semibold text-ink">{formatRupees(deal.spend_inr)}</span>
                               </div>
                               <div>
-                                <span className="text-ink-3 block">ROAS Return</span>
+                                <span className="text-ink-3 block">ROAS Return (Est.)</span>
                                 <span className="font-semibold text-ink">{deal.roas_estimate}x</span>
                               </div>
+                            </div>
+                            <div className="pt-1 flex items-center justify-between text-[9px] font-mono text-ink-3 border-t border-line/40">
+                              <span>{deal.provenance_label || 'Sample / Demo Dataset'}</span>
+                              <span className="text-verified font-medium">Completed</span>
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="p-4 rounded-ctl bg-paper border border-line text-center font-mono text-[11px] text-ink-3">
-                          No past brand campaigns currently verified for this profile.
+                        <div className="p-6 rounded-ctl bg-paper border border-line text-center space-y-1">
+                          <p className="font-mono text-[11px] text-ink-2 font-medium">
+                            No documented brand collaborations yet.
+                          </p>
+                          <p className="font-mono text-[10px] text-ink-3">
+                            Direct verified merchant ledger audit pending or unrecorded.
+                          </p>
                         </div>
                       )}
                     </div>

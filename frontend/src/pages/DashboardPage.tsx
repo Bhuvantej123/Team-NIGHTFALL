@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LandingScreen } from '../components/screens/LandingScreen.jsx';
-import { createCampaign } from '../api/client';
+import { createCampaign, fetchCreators } from '../api/client';
 import { CheckCircle2, AlertCircle, RefreshCw, X, Server } from 'lucide-react';
-import type { HealthResponse } from '../types';
+import type { HealthResponse, CreatorProfile } from '../types';
 
 interface DashboardPageProps {
   onOpenColophon?: (work: any, creator: any, dark?: boolean) => void;
@@ -18,6 +18,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthLoading, setHealthLoading] = useState<boolean>(true);
   const [showHealthModal, setShowHealthModal] = useState<boolean>(false);
+  const [creators, setCreators] = useState<CreatorProfile[]>([]);
 
   const fetchHealth = async () => {
     setHealthLoading(true);
@@ -38,6 +39,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   useEffect(() => {
     fetchHealth();
+    fetchCreators()
+      .then((data) => {
+        const forbidden = new Set([
+          'c-test-1', 'c-test-2', 'c-test-3',
+          'creator-demo-001', 'creator-demo-002', 'creator-demo-003',
+          'test-creator-1', 'test-creator-2', 'test-creator-3'
+        ]);
+        const valid = (data || []).filter(
+          (c) =>
+            !forbidden.has(c.id) &&
+            !c.display_name?.toLowerCase().includes('elena') &&
+            !c.display_name?.toLowerCase().includes('marcus') &&
+            !c.display_name?.toLowerCase().includes('aria chen')
+        );
+        setCreators(valid);
+      })
+      .catch(() => {});
   }, []);
 
   const handleStartCampaign = async (prompt?: string) => {
@@ -64,9 +82,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative h-full min-h-0">
       {/* P2 Colophon Cinematic Studio Landing Presentation */}
       <LandingScreen
+        creators={creators as any}
         onStartCampaign={handleStartCampaign}
         onBrowseCreators={() => navigate('/discover')}
         onOpenColophon={onOpenColophon}
@@ -98,7 +117,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="w-full max-w-md rounded-card bg-surface border border-line p-6 shadow-float space-y-4 font-ui">
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <div className="flex items-center gap-2">
-                <Server size={16} className="text-cobalt" />
+                <Server size={16} className="text-ink" />
                 <h3 className="font-mono text-[13px] font-semibold text-ink uppercase tracking-wider">
                   SYSTEM TELEMETRY
                 </h3>

@@ -41,7 +41,7 @@ export const CreatorDetailPage: React.FC<CreatorDetailPageProps> = ({ onOpenColo
   if (loading) {
     return (
       <div className="max-w-[1280px] mx-auto px-6 py-28 text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cobalt-tint text-cobalt animate-spin mb-2">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-sunken text-ink animate-spin mb-2">
           <Loader2 size={24} />
         </div>
         <div className="font-mono text-[11px] uppercase tracking-wider text-ink-3">
@@ -83,7 +83,7 @@ export const CreatorDetailPage: React.FC<CreatorDetailPageProps> = ({ onOpenColo
             </button>
             <button
               onClick={loadCreator}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-ctl bg-cobalt hover:bg-cobalt-press text-white text-[12px] font-medium transition-colors shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-ctl bg-ink hover:bg-ink/85 text-surface text-[12px] font-medium transition-colors shadow-sm cursor-pointer"
             >
               <RefreshCw size={13} />
               <span>Retry</span>

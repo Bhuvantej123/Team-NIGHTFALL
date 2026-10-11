@@ -162,12 +162,12 @@ export function MatchesStep({
   const comparedCreators = matches.filter((c) => comparingIds.includes(c.id));
 
   return (
-    <div className="min-h-[calc(100vh-105px)] flex flex-col justify-between bg-paper selection:bg-ink selection:text-white">
+    <div className="h-full flex-1 flex flex-col justify-between bg-paper selection:bg-ink selection:text-white min-h-0 overflow-hidden">
       {/* Main Workspace Area */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-6 lg:gap-8 px-6 pt-4 max-w-[1400px] w-full mx-auto">
-        {/* Left Aside: Levers & Constraints (330px) */}
-        <aside className="w-full lg:w-[330px] flex-shrink-0 flex flex-col">
-          <div className="bg-surface p-5 rounded-card border border-line shadow-2xs flex-1 flex flex-col justify-between space-y-4">
+      <div className="flex-1 flex flex-col lg:flex-row gap-5 lg:gap-6 px-6 pt-3 pb-2 max-w-[1400px] w-full mx-auto min-h-0 overflow-hidden">
+        {/* Left Aside: Levers & Constraints (310px) */}
+        <aside className="w-full lg:w-[310px] flex-shrink-0 flex flex-col min-h-0">
+          <div className="bg-surface p-4 rounded-card border border-line shadow-2xs flex-1 flex flex-col justify-between space-y-3">
             <div className="space-y-4">
               <div>
                 <span className="font-mono text-[10px] uppercase tracking-wider text-ink-3">
@@ -311,7 +311,7 @@ export function MatchesStep({
         <div className="flex-1 flex flex-col justify-between min-w-0">
           <div>
             {/* Header Toolbar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-2.5 mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-2 mb-3">
               <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="font-display text-2xl sm:text-[26px] text-ink leading-tight font-normal">
                   <span className="tnum font-medium mr-1.5">
@@ -463,7 +463,7 @@ export function MatchesStep({
                         }`}
                       >
                         {/* Cinematic Banner */}
-                        <div className="relative h-[155px] xl:h-[160px] w-full overflow-hidden bg-stage-raised flex-shrink-0">
+                        <div className="relative h-[135px] xl:h-[142px] w-full overflow-hidden bg-stage-raised flex-shrink-0">
                           <img
                             src={heroWork.imageUrl || creator.avatar}
                             alt={creator.name}
@@ -497,7 +497,7 @@ export function MatchesStep({
                         </div>
 
                         {/* Card Body */}
-                        <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
+                        <div className="p-2.5 space-y-1.5 flex-1 flex flex-col justify-between">
                           {/* Channel & Follower Strip */}
                           <div className="p-2 rounded-ctl bg-paper border border-line space-y-1 transition-colors group-hover:bg-sunken/40">
                             <div className="flex items-center justify-between font-mono text-[9.5px]">
@@ -562,7 +562,7 @@ export function MatchesStep({
                         </div>
 
                         {/* Card Action Footer */}
-                        <div className="px-3.5 py-2.5 bg-paper/60 border-t border-line flex items-center justify-between gap-2 flex-shrink-0">
+                        <div className="px-3 py-2 bg-paper/60 border-t border-line flex items-center justify-between gap-2 flex-shrink-0">
                           <div className="flex items-center gap-2">
                             <button
                               onClick={(e) => {

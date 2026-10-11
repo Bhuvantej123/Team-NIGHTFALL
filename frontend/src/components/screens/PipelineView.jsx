@@ -102,7 +102,7 @@ export function PipelineView({
           </div>
           <div>
             <span className="text-ink-3">IN PROGRESS: </span>
-            <span className="font-semibold text-cobalt">{progressList.length}</span>
+            <span className="font-semibold text-ink">{progressList.length}</span>
           </div>
         </div>
 

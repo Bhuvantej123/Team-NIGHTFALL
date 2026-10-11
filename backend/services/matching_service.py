@@ -73,13 +73,14 @@ def compute_skill_niche_score(
     creator_skills: list[str],
     creator_niches: list[str],
     creator_tools: list[str],
+    creator_disciplines: Optional[list[str]] = None,
 ) -> tuple[float, list[str], list[str]]:
     """
     Computes skill and niche relevance (0.0 to 100.0).
     Weight: 35%.
     """
     matched_skills = []
-    creator_skill_corpus = " ".join(creator_skills + creator_tools).lower()
+    creator_skill_corpus = " ".join(creator_skills + creator_tools + (creator_disciplines or [])).lower()
 
     for req in campaign_skills:
         req_clean = req.strip()
@@ -172,7 +173,8 @@ def compute_portfolio_score(
         title = item.get("title", "")
         desc = item.get("description", "")
         tags = item.get("tags", [])
-        item_corpus = f"{title} {desc} {' '.join(tags)}".lower()
+        ctype = item.get("content_type", "")
+        item_corpus = f"{title} {desc} {' '.join(tags)} {ctype}".lower()
 
         # Check for token overlap
         overlap = campaign_tokens.intersection(_tokenize(item_corpus))
@@ -332,6 +334,7 @@ def generate_match_explanation(
     over_budget: bool,
     available: bool,
     budget_status: str = "compatible",
+    matched_disciplines: Optional[list[str]] = None,
 ) -> str:
     """Generates human-readable deterministic explanation grounded in evidence."""
     sentences = []
@@ -358,6 +361,10 @@ def generate_match_explanation(
         sentences.append(f"Demonstrates confirmed {' and '.join(skill_parts)}.")
     elif skill_score == 0.0:
         sentences.append("No overlap found with required campaign skills or niches.")
+
+    # Disciplines
+    if matched_disciplines:
+        sentences.append(f"Specialized creative discipline: {', '.join(matched_disciplines)} with verified portfolio history.")
 
     # Style
     if matched_styles:
@@ -413,9 +420,16 @@ def evaluate_creator_for_campaign(
     creator_currency = creator_dict.get("currency")
     creator_avail = bool(creator_dict.get("availability", False))
 
+    creator_disciplines = creator_dict.get("disciplines")
+    if not creator_disciplines:
+        from backend.services.creator_service import derive_creator_disciplines
+        creator_disciplines = derive_creator_disciplines(creator_dict)
+        creator_dict["disciplines"] = creator_disciplines
+
     # 1. Skill & Niche (35%)
     skill_score, matched_skills, matched_niches = compute_skill_niche_score(
-        camp_skills, camp_niches, creator_skills, creator_niches, creator_tools
+        camp_skills, camp_niches, creator_skills, creator_niches, creator_tools,
+        creator_disciplines=creator_disciplines,
     )
 
     # 2. Portfolio (25%)
@@ -495,6 +509,13 @@ def evaluate_creator_for_campaign(
         availability=round(avail_score / 100.0, 4),
     )
 
+    # Check for discipline alignment with brief
+    campaign_corpus = f"{' '.join(camp_skills)} {' '.join(camp_niches)} {' '.join(camp_deliverables)} {camp_product} {camp_style}".lower()
+    matched_disciplines = [
+        d for d in creator_disciplines
+        if d.lower() in campaign_corpus or any(tok in campaign_corpus for tok in d.lower().split() if len(tok) >= 4)
+    ]
+
     evidence_dict: dict[str, list[str]] = {
         "skills": matched_skills,
         "niches": matched_niches,
@@ -503,6 +524,8 @@ def evaluate_creator_for_campaign(
         "budget": budget_evidence,
         "availability": avail_evidence,
     }
+    if matched_disciplines:
+        evidence_dict["disciplines"] = [f"Verified {d}" for d in matched_disciplines]
 
     explanation = generate_match_explanation(
         creator_name=creator_dict.get("display_name", "Creator"),
@@ -518,6 +541,7 @@ def evaluate_creator_for_campaign(
         over_budget=over_budget,
         available=creator_avail,
         budget_status=budget_status,
+        matched_disciplines=matched_disciplines,
     )
 
     from backend.models.creator_model import CreatorModel

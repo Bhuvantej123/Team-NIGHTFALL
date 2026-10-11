@@ -29,6 +29,8 @@ const AppShell: React.FC = () => {
   const location = useLocation();
 
   const isCasting = location.pathname.includes('/casting');
+  const isLanding = location.pathname === '/';
+  const isCampaignJourney = location.pathname.startsWith('/campaigns/') && location.pathname !== '/campaigns';
 
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -63,7 +65,7 @@ const AppShell: React.FC = () => {
   return (
     <div
       className={`min-h-screen bg-paper text-ink flex flex-col font-ui antialiased selection:bg-marker selection:text-ink ${
-        isCasting ? 'h-screen w-screen overflow-hidden' : ''
+        isCasting || isCampaignJourney ? 'h-screen w-screen overflow-hidden' : ''
       }`}
     >
       {/* 64px Editorial TopBar (Hidden in Casting Room) */}
@@ -76,7 +78,7 @@ const AppShell: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <main className={isCasting ? 'h-screen w-screen overflow-hidden' : 'flex-1'}>
+      <main className={isCasting ? 'h-screen w-screen overflow-hidden' : isCampaignJourney ? 'flex-1 flex flex-col min-h-0 overflow-hidden' : isLanding ? 'flex-1 md:overflow-hidden' : 'flex-1'}>
         <Routes>
           <Route
             path="/"
@@ -103,8 +105,8 @@ const AppShell: React.FC = () => {
         </Routes>
       </main>
 
-      {/* Demo Footer (Hidden in Casting Room) */}
-      {!isCasting && (
+      {/* Demo Footer (Hidden in Casting Room, Landing Screen, and Campaign Journey) */}
+      {!isCasting && !isLanding && !isCampaignJourney && (
         <DemoFooter
           onResetData={() => {
             localStorage.removeItem('colophon_campaigns');

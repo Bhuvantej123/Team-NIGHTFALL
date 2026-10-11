@@ -18,6 +18,7 @@ export interface CreatorFilterParams {
   skill?: string;
   available?: boolean | string;
   q?: string;
+  discipline?: string;
 }
 
 export interface CreateCampaignInput {
@@ -116,6 +117,9 @@ export async function fetchCreators(
   }
   if (filters?.q && filters.q.trim()) {
     query.set('q', filters.q.trim());
+  }
+  if (filters?.discipline && filters.discipline !== 'All') {
+    query.set('discipline', filters.discipline);
   }
 
   const url = `/api/creators${query.toString() ? `?${query.toString()}` : ''}`;

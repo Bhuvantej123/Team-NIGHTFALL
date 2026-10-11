@@ -339,7 +339,7 @@ export const CampaignJourneyPage: React.FC<CampaignJourneyPageProps> = ({
   if (isLoading) {
     return (
       <div className="max-w-[1400px] mx-auto px-6 py-24 flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-8 h-8 text-cobalt animate-spin" />
+        <Loader2 className="w-8 h-8 text-ink animate-spin" />
         <span className="font-mono text-[13px] text-ink-2 uppercase tracking-wider">
           Loading campaign dossier...
         </span>
@@ -382,7 +382,7 @@ export const CampaignJourneyPage: React.FC<CampaignJourneyPageProps> = ({
 
 
   return (
-    <div className={`flex flex-col min-h-full ${activeStepName === 'casting' ? 'h-screen w-screen overflow-hidden' : ''}`}>
+    <div className={`flex flex-col h-full min-h-0 ${activeStepName === 'casting' ? 'h-screen w-screen overflow-hidden' : 'overflow-hidden'}`}>
       {/* Step Rail Navigation (Always visible across steps except pipeline and casting) */}
       {activeStepName !== 'pipeline' && activeStepName !== 'casting' && (
         <StepRail
@@ -393,7 +393,7 @@ export const CampaignJourneyPage: React.FC<CampaignJourneyPageProps> = ({
       )}
 
       {/* Main Step Screen */}
-      <div className="flex-1">
+      <div className={`flex-1 min-h-0 ${activeStepName === 'matches' ? 'flex flex-col overflow-hidden' : 'overflow-y-auto'}`}>
         {activeStepName === 'brief' && (
           <BriefStep
             campaign={campaign}

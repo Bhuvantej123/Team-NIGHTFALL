@@ -40,8 +40,8 @@ export const GrowthEngagementSection: React.FC<GrowthEngagementSectionProps> = (
 
   const creatorColors = [
     { stroke: '#14794A', name: 'Aarav Sharma' },
-    { stroke: '#1447FF', name: 'Elena Rostova' },
-    { stroke: '#14130F', name: 'Marcus Vance' },
+    { stroke: '#1447FF', name: 'Pooja Varma' },
+    { stroke: '#14130F', name: 'Vikram Nair' },
   ];
 
   return (

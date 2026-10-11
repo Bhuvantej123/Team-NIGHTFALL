@@ -20,7 +20,7 @@ export function DemoFooter({ onResetData }) {
           {/* Reset shortcut */}
           <button
             onClick={onResetData}
-            className="inline-flex items-center gap-1.5 hover:text-ink transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-cobalt rounded-[2px] cursor-pointer"
+            className="inline-flex items-center gap-1.5 hover:text-ink transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ink rounded-[2px] cursor-pointer"
             title="Press Shift+R anytime to reset application state"
           >
             <RotateCcw size={12} strokeWidth={1.5} />
