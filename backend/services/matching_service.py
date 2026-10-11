@@ -142,9 +142,18 @@ def compute_portfolio_score(
     matched_evidence = []
     points = 0.0
 
+    UNKNOWN_PLATFORMS = {"unspecified", "unknown", "none", ""}
+
     # 1. Platform alignment (up to 30 points)
-    preferred_platforms = {p.strip().lower() for p in campaign_platforms if p.strip()}
-    creator_portfolio_platforms = {item.get("platform", "").strip().lower() for item in portfolio_items}
+    preferred_platforms = {
+        p.strip().lower() for p in campaign_platforms
+        if p.strip() and p.strip().lower() not in UNKNOWN_PLATFORMS
+    }
+    creator_portfolio_platforms = {
+        item.get("platform", "").strip().lower()
+        for item in portfolio_items
+        if item.get("platform") and item.get("platform").strip().lower() not in UNKNOWN_PLATFORMS
+    }
     common_platforms = preferred_platforms.intersection(creator_portfolio_platforms)
     if preferred_platforms:
         if common_platforms:
@@ -237,9 +246,31 @@ def compute_budget_score(
     Weight: 10%.
     Returns (budget_score, budget_fit, over_budget, evidence_list).
     """
+    c_curr = (
+        creator_currency.strip().upper()
+        if (isinstance(creator_currency, str) and creator_currency.strip())
+        else None
+    )
+    camp_curr = (
+        campaign_currency.strip().upper()
+        if (isinstance(campaign_currency, str) and campaign_currency.strip())
+        else None
+    )
+
+    # If currencies differ or are missing, mark budget fit as unknown without claiming over or compatible
+    if not c_curr or not camp_curr or c_curr != camp_curr:
+        c_disp = c_curr or "unspecified"
+        camp_disp = camp_curr or "unspecified"
+        evidence = [
+            f"Creator starting rate: {c_disp} {creator_price:.2f}",
+            f"Campaign budget range: {camp_disp} {budget_min:.2f}–{budget_max:.2f}",
+            f"Budget compatibility unknown: differing or missing currencies ({c_disp} vs {camp_disp}).",
+        ]
+        return 0.0, False, False, evidence
+
     evidence = [
-        f"Creator starting rate: {creator_currency} {creator_price:.2f}",
-        f"Campaign budget range: {campaign_currency} {budget_min:.2f}–{budget_max:.2f}",
+        f"Creator starting rate: {c_curr} {creator_price:.2f}",
+        f"Campaign budget range: {camp_curr} {budget_min:.2f}–{budget_max:.2f}",
     ]
 
     # Perfect fit: within minimum and maximum
@@ -256,7 +287,7 @@ def compute_budget_score(
     over_amount = creator_price - budget_max
     excess_ratio = over_amount / budget_max if budget_max > 0 else 1.0
 
-    evidence.append(f"Over budget by {campaign_currency} {over_amount:.2f} ({excess_ratio * 100:.1f}%)")
+    evidence.append(f"Over budget by {camp_curr} {over_amount:.2f} ({excess_ratio * 100:.1f}%)")
 
     if excess_ratio <= 0.25:
         # Slightly over budget (1-25%): 40 to 10 points
@@ -300,6 +331,7 @@ def generate_match_explanation(
     matched_styles: list[str],
     over_budget: bool,
     available: bool,
+    budget_status: str = "compatible",
 ) -> str:
     """Generates human-readable deterministic explanation grounded in evidence."""
     sentences = []
@@ -334,8 +366,12 @@ def generate_match_explanation(
         sentences.append("Style tags do not strongly match the requested campaign tone.")
 
     # Budget & Availability warnings
-    if over_budget:
+    if budget_status == "unknown":
+        sentences.append("Budget compatibility unknown because currencies differ or are missing.")
+    elif budget_status == "over_budget" or over_budget:
         sentences.append("WARNING: Creator starting rate exceeds the campaign budget ceiling.")
+    elif budget_status == "below_min":
+        sentences.append("Creator rate is economical (below campaign minimum).")
     else:
         sentences.append("Pricing is compatible with the campaign budget.")
 
@@ -365,7 +401,7 @@ def evaluate_creator_for_campaign(
     camp_tone = campaign_dict.get("tone", "")
     budget_min = float(campaign_dict.get("budget_min", 0.0))
     budget_max = float(campaign_dict.get("budget_max", 0.0))
-    camp_currency = campaign_dict.get("currency", "USD")
+    camp_currency = campaign_dict.get("currency")
 
     creator_skills = creator_dict.get("skills", [])
     creator_tools = creator_dict.get("ai_tools", [])
@@ -374,7 +410,7 @@ def evaluate_creator_for_campaign(
     portfolio_evidence = creator_dict.get("portfolio_evidence", "")
     creator_styles = creator_dict.get("style_tags", [])
     creator_price = float(creator_dict.get("starting_price", 0.0))
-    creator_currency = creator_dict.get("currency", "USD")
+    creator_currency = creator_dict.get("currency")
     creator_avail = bool(creator_dict.get("availability", False))
 
     # 1. Skill & Niche (35%)
@@ -393,10 +429,32 @@ def evaluate_creator_for_campaign(
         camp_style, camp_tone, creator_styles
     )
 
+    # Check currency matching
+    c_curr = (
+        creator_currency.strip().upper()
+        if (isinstance(creator_currency, str) and creator_currency.strip())
+        else None
+    )
+    camp_curr = (
+        camp_currency.strip().upper()
+        if (isinstance(camp_currency, str) and camp_currency.strip())
+        else None
+    )
+    currencies_match = bool(c_curr and camp_curr and c_curr == camp_curr)
+
     # 4. Budget (10%)
     budget_score, budget_fit, over_budget, budget_evidence = compute_budget_score(
         creator_price, budget_min, budget_max, creator_currency, camp_currency
     )
+
+    if not currencies_match:
+        budget_status = "unknown"
+    elif over_budget:
+        budget_status = "over_budget"
+    elif creator_price < budget_min:
+        budget_status = "below_min"
+    else:
+        budget_status = "compatible"
 
     # 5. Availability (10%)
     avail_score, avail_fit, avail_evidence = compute_availability_score(
@@ -404,20 +462,36 @@ def evaluate_creator_for_campaign(
     )
 
     # Calculate overall score [0.00, 100.00]
-    total_score = round(
-        skill_score        * SCORE_WEIGHTS["skill_niche_relevance"] +
-        portfolio_score    * SCORE_WEIGHTS["portfolio_relevance"]   +
-        style_score        * SCORE_WEIGHTS["style_compatibility"]   +
-        budget_score       * SCORE_WEIGHTS["budget_fit"]            +
-        avail_score        * SCORE_WEIGHTS["availability"],
-        2
-    )
+    if currencies_match:
+        total_score = round(
+            skill_score        * SCORE_WEIGHTS["skill_niche_relevance"] +
+            portfolio_score    * SCORE_WEIGHTS["portfolio_relevance"]   +
+            style_score        * SCORE_WEIGHTS["style_compatibility"]   +
+            budget_score       * SCORE_WEIGHTS["budget_fit"]            +
+            avail_score        * SCORE_WEIGHTS["availability"],
+            2
+        )
+    else:
+        # Exclude budget component from overall score and renormalize remaining weights proportionally
+        active_weight_sum = (
+            SCORE_WEIGHTS["skill_niche_relevance"] +
+            SCORE_WEIGHTS["portfolio_relevance"]   +
+            SCORE_WEIGHTS["style_compatibility"]   +
+            SCORE_WEIGHTS["availability"]
+        )
+        raw_score = (
+            skill_score        * SCORE_WEIGHTS["skill_niche_relevance"] +
+            portfolio_score    * SCORE_WEIGHTS["portfolio_relevance"]   +
+            style_score        * SCORE_WEIGHTS["style_compatibility"]   +
+            avail_score        * SCORE_WEIGHTS["availability"]
+        )
+        total_score = round(min(100.0, max(0.0, raw_score / active_weight_sum)), 2) if active_weight_sum > 0 else 0.0
 
     score_breakdown = ScoreBreakdown(
         skill_niche_relevance=round(skill_score / 100.0, 4),
         portfolio_relevance=round(portfolio_score / 100.0, 4),
         style_compatibility=round(style_score / 100.0, 4),
-        budget_fit=round(budget_score / 100.0, 4),
+        budget_fit=round(budget_score / 100.0, 4) if currencies_match else 0.0,
         availability=round(avail_score / 100.0, 4),
     )
 
@@ -443,6 +517,7 @@ def evaluate_creator_for_campaign(
         matched_styles=matched_styles,
         over_budget=over_budget,
         available=creator_avail,
+        budget_status=budget_status,
     )
 
     from backend.models.creator_model import CreatorModel

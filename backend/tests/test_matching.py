@@ -402,3 +402,216 @@ def test_get_matches_unknown_campaign_returns_404(client):
     res = client.get("/api/campaigns/unknown-camp-uuid-999/matches")
     assert res.status_code == 404
     assert res.get_json()["code"] == "NOT_FOUND"
+
+
+# ── 19. Currency normalization and mismatch budget scoring ─────────────────────
+def test_currency_normalization_and_mismatch_budget_scoring():
+    # Matching currencies: INR / INR with case & whitespace normalization
+    score_inr, fit_inr, over_inr, _ = compute_budget_score(
+        creator_price=15000.0, budget_min=10000.0, budget_max=20000.0, creator_currency=" inr ", campaign_currency="INR"
+    )
+    assert score_inr == 100.0
+    assert fit_inr is True
+    assert over_inr is False
+
+    # Matching currencies: USD / USD
+    score_usd, fit_usd, over_usd, _ = compute_budget_score(
+        creator_price=800.0, budget_min=500.0, budget_max=1000.0, creator_currency="usd", campaign_currency="USD"
+    )
+    assert score_usd == 100.0
+    assert fit_usd is True
+    assert over_usd is False
+
+    # Currency mismatch: INR vs USD (e.g. ₹15,000 INR vs $500–$1,000 USD)
+    score_mismatch, fit_mismatch, over_mismatch, ev_mismatch = compute_budget_score(
+        creator_price=15000.0, budget_min=500.0, budget_max=1000.0, creator_currency="INR", campaign_currency="USD"
+    )
+    assert score_mismatch == 0.0
+    assert fit_mismatch is False
+    assert over_mismatch is False
+    assert any("Budget compatibility unknown" in ev for ev in ev_mismatch)
+    assert any("INR vs USD" in ev for ev in ev_mismatch)
+
+    # Missing creator currency (None or empty)
+    score_no_c_curr, fit_no_c_curr, over_no_c_curr, ev_no_c = compute_budget_score(
+        creator_price=500.0, budget_min=500.0, budget_max=1000.0, creator_currency="", campaign_currency="USD"
+    )
+    assert score_no_c_curr == 0.0
+    assert fit_no_c_curr is False
+    assert over_no_c_curr is False
+    assert any("Budget compatibility unknown" in ev for ev in ev_no_c)
+
+    # Missing campaign currency (None)
+    score_no_camp_curr, fit_no_camp_curr, over_no_camp_curr, ev_no_camp = compute_budget_score(
+        creator_price=500.0, budget_min=500.0, budget_max=1000.0, creator_currency="USD", campaign_currency=None
+    )
+    assert score_no_camp_curr == 0.0
+    assert fit_no_camp_curr is False
+    assert over_no_camp_curr is False
+    assert any("Budget compatibility unknown" in ev for ev in ev_no_camp)
+
+
+# ── 20. Currency mismatch renormalizes remaining weights without penalty ───────
+def test_currency_mismatch_renormalizes_weights_without_penalty():
+    campaign_dict = {
+        "id": "c-test-curr-mismatch",
+        "brand_name": "Global Brands",
+        "product_description": "Tech product video",
+        "target_audience": "Tech enthusiasts",
+        "required_skills": ["video editing"],
+        "preferred_niches": ["tech"],
+        "preferred_platforms": ["youtube"],
+        "deliverables": ["video"],
+        "preferred_style": "cinematic",
+        "tone": "futuristic",
+        "budget_min": 500.0,
+        "budget_max": 1000.0,
+        "currency": "USD",
+    }
+    creator_dict = {
+        "id": "creator-test-inr",
+        "display_name": "Pooja Varma",
+        "handle": "@pooja_inr",
+        "bio": "Tech creator in India",
+        "skills": ["video editing"],
+        "ai_tools": [],
+        "niches": ["tech"],
+        "platforms": [{"name": "youtube", "handle": "@pooja_inr"}],
+        "portfolio_items": [
+            {"id": "p1", "title": "Tech product review", "description": "video editing clip", "platform": "youtube", "tags": ["tech", "video"]}
+        ],
+        "portfolio_evidence": "Extensive video editing and tech experience",
+        "style_tags": ["cinematic", "futuristic"],
+        "starting_price": 50000.0,
+        "currency": "INR",  # Mismatched currency!
+        "availability": True,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+
+    result = evaluate_creator_for_campaign(campaign_dict, creator_dict)
+
+    # Must NOT claim creator is over budget or compatible
+    assert result.over_budget is False
+    assert result.budget_fit is False
+    assert result.score_breakdown.budget_fit == 0.0
+
+    # Explanation must clearly note unknown budget compatibility
+    assert "Budget compatibility unknown because currencies differ or are missing." in result.explanation
+    assert "WARNING: Creator starting rate exceeds the campaign budget ceiling." not in result.explanation
+    assert "Pricing is compatible with the campaign budget." not in result.explanation
+
+    # Renormalization verification:
+    # Since creator matches skills, niches, style, availability, and portfolio strongly,
+    # the unassessable budget component (10%) must NOT pull their score down by 10 points.
+    # The remaining 90% weight is scaled to 100%.
+    assert result.total_score >= 85.0
+    assert 0.0 <= result.total_score <= 100.0
+
+
+# ── 21. Match explanations distinguish all four budget states ──────────────────
+def test_match_explanations_distinguish_all_four_budget_states():
+    base_campaign = {
+        "id": "c-test-expl",
+        "brand_name": "Aura",
+        "product_description": "Clean beauty serum",
+        "target_audience": "Skincare lovers",
+        "required_skills": ["video editing"],
+        "preferred_niches": ["beauty"],
+        "preferred_platforms": ["instagram"],
+        "deliverables": ["reel"],
+        "preferred_style": "minimalist",
+        "tone": "clean",
+        "budget_min": 500.0,
+        "budget_max": 1000.0,
+        "currency": "USD",
+    }
+    base_creator = {
+        "id": "creator-expl",
+        "display_name": "Test Creator",
+        "handle": "@test_expl",
+        "bio": "Beauty creator",
+        "skills": ["video editing"],
+        "ai_tools": [],
+        "niches": ["beauty"],
+        "platforms": [{"name": "instagram", "handle": "@test_expl"}],
+        "portfolio_items": [],
+        "portfolio_evidence": "Beauty videos",
+        "style_tags": ["minimalist"],
+        "availability": True,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+
+    # 1. Compatible budget (750 USD in 500-1000 USD)
+    c1 = dict(base_creator, starting_price=750.0, currency="USD")
+    r1 = evaluate_creator_for_campaign(base_campaign, c1)
+    assert r1.budget_fit is True
+    assert r1.over_budget is False
+    assert "Pricing is compatible with the campaign budget." in r1.explanation
+
+    # 2. Over budget (1500 USD > 1000 USD)
+    c2 = dict(base_creator, starting_price=1500.0, currency="USD")
+    r2 = evaluate_creator_for_campaign(base_campaign, c2)
+    assert r2.budget_fit is False
+    assert r2.over_budget is True
+    assert "WARNING: Creator starting rate exceeds the campaign budget ceiling." in r2.explanation
+
+    # 3. Creator rate below minimum (300 USD < 500 USD)
+    c3 = dict(base_creator, starting_price=300.0, currency="USD")
+    r3 = evaluate_creator_for_campaign(base_campaign, c3)
+    assert r3.budget_fit is True
+    assert r3.over_budget is False
+    assert "Creator rate is economical (below campaign minimum)." in r3.explanation
+
+    # 4. Budget compatibility unknown (differing currency: EUR vs USD)
+    c4 = dict(base_creator, starting_price=600.0, currency="EUR")
+    r4 = evaluate_creator_for_campaign(base_campaign, c4)
+    assert r4.budget_fit is False
+    assert r4.over_budget is False
+    assert "Budget compatibility unknown because currencies differ or are missing." in r4.explanation
+
+
+# ── 22. Unknown portfolio platforms receive no confirmed match credit ──────────
+def test_unknown_portfolio_platforms_receive_no_credit():
+    # 1. Unspecified / unknown platform against preferred platforms
+    score_unspec, ev_unspec = compute_portfolio_score(
+        campaign_deliverables=["reel"],
+        campaign_platforms=["instagram", "tiktok"],
+        campaign_product="Organic skincare",
+        campaign_audience="young adults",
+        portfolio_items=[
+            {"id": "pi-1", "title": "Skincare demo", "description": "clip", "platform": "unspecified", "tags": []},
+            {"id": "pi-2", "title": "Facial care routine", "description": "clip", "platform": "unknown", "tags": []},
+        ],
+        portfolio_evidence="",
+    )
+    # Platforms evidence must NOT list unspecified or unknown
+    assert not any("Platforms:" in e for e in ev_unspec)
+
+    # 2. Known platform (instagram) gets platform credit and evidence
+    score_known, ev_known = compute_portfolio_score(
+        campaign_deliverables=["reel"],
+        campaign_platforms=["instagram", "tiktok"],
+        campaign_product="Organic skincare",
+        campaign_audience="young adults",
+        portfolio_items=[
+            {"id": "pi-3", "title": "Skincare demo", "description": "clip", "platform": "instagram", "tags": []},
+        ],
+        portfolio_evidence="",
+    )
+    assert any("Platforms: instagram" in e for e in ev_known)
+    assert score_known > score_unspec
+
+    # 3. Fallback points when campaign platforms are empty
+    # Unspecified platforms must NOT trigger the fallback 15 points
+    score_empty_pref_unspec, _ = compute_portfolio_score(
+        campaign_deliverables=[],
+        campaign_platforms=[],
+        campaign_product="",
+        campaign_audience="",
+        portfolio_items=[
+            {"id": "pi-4", "title": "", "description": "", "platform": "unspecified", "tags": []},
+        ],
+        portfolio_evidence="",
+    )
+    assert score_empty_pref_unspec == 0.0
+

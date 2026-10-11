@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #F4F2ED;
+  --surface: #FFFFFF;
+  --sunken: #ECE9E2;
+  --line: #E4E0D7;
+  --line-strong: #CFCABD;
+  --ink: #14130F;
+  --ink-2: #4A473F;
+  --ink-3: #6B675E;
+  --cobalt: #1447FF;
+  --cobalt-press: #0F36CC;
+  --cobalt-tint: #E6ECFF;
+  --marker: #FFE27A;
+  --stage: #0D0D0B;
+  --stage-raised: #171714;
+  --stage-line: #2A2A25;
+  --stage-ink: #F1EFE9;
+  --stage-ink-2: #A19D92;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numerals everywhere for prices and scores */
+.tnum {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marker stroke behind text: inset box-shadow 0 -0.5em 0 with box-decoration-break: clone */
+.marker-stroke {
+  box-shadow: inset 0 -0.48em 0 0 #FFE27A;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.marker-stroke-active {
+  background-color: #FFE27A;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Focus styles matching spec: 2px Cobalt with 2px Paper offset */
+*:focus-visible {
+  outline: 2px solid #1447FF;
+  outline-offset: 2px;
+}
+
+/* Custom hairline borders */
+.border-hairline {
+  border-width: 1px;
+  border-color: #E4E0D7;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CFCABD;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A19D92;
+}

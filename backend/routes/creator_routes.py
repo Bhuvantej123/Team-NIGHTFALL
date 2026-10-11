@@ -60,6 +60,49 @@ def get_creators():
         }), 500
 
 
+@creator_bp.get("/creators/batch-analytics")
+def get_batch_creator_analytics():
+    """
+    GET /api/creators/batch-analytics?ids=creator-001,creator-002,creator-003
+    Returns a dictionary mapping creator_id to their analytics payload.
+    Used for multi-creator comparisons.
+    """
+    ids_param = request.args.get("ids", "")
+    creator_ids = [cid.strip() for cid in ids_param.split(",") if cid.strip()]
+    if not creator_ids:
+        return jsonify({
+            "error": "Query parameter 'ids' is required (comma-separated).",
+            "code": "VALIDATION_ERROR",
+            "details": {"parameter": "ids"},
+        }), 400
+
+    from backend.services.creator_analytics_service import get_creator_analytics
+    results = {}
+    for cid in creator_ids:
+        results[cid] = get_creator_analytics(cid)
+
+    return jsonify(results), 200
+
+
+@creator_bp.get("/creators/<creator_id>/analytics")
+def get_single_creator_analytics(creator_id: str):
+    """
+    GET /api/creators/<creator_id>/analytics
+    Returns full intelligence analytics for the creator.
+    """
+    creator = get_creator_by_id(creator_id)
+    if creator is None:
+        return jsonify({
+            "error": f"Creator with ID '{creator_id}' was not found.",
+            "code": "NOT_FOUND",
+            "details": {"creator_id": creator_id},
+        }), 404
+
+    from backend.services.creator_analytics_service import get_creator_analytics
+    analytics = get_creator_analytics(creator_id)
+    return jsonify(analytics), 200
+
+
 @creator_bp.get("/creators/<creator_id>")
 def get_creator(creator_id: str):
     """
@@ -82,3 +125,4 @@ def get_creator(creator_id: str):
             "code": "INTERNAL_ERROR",
             "details": {},
         }), 500
+

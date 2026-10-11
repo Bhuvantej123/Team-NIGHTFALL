@@ -13,8 +13,11 @@
   }
 
   body {
-    @apply bg-surface-900 text-white font-sans antialiased;
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+    background-color: var(--paper, #F4F2ED);
+    color: var(--ink, #14130F);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 }
@@ -72,4 +75,108 @@
   .badge-danger   { @apply badge bg-red-500/20 text-red-300 border border-red-500/30; }
   .badge-info     { @apply badge bg-brand-500/20 text-brand-300 border border-brand-500/30; }
   .badge-neutral  { @apply badge bg-surface-700 text-slate-300 border border-surface-600; }
+}
+
+/* Colophon Editorial Design System Variables */
+:root {
+  --paper: #F4F2ED;
+  --surface: #FFFFFF;
+  --sunken: #ECE9E2;
+  --line: #E4E0D7;
+  --line-strong: #CFCABD;
+  --ink: #14130F;
+  --ink-2: #4A473F;
+  --ink-3: #6B675E;
+  --cobalt: #14130F;
+  --cobalt-press: #26241E;
+  --cobalt-tint: #ECE9E2;
+  --marker: #FFE27A;
+  --stage: #0D0D0B;
+  --stage-raised: #171714;
+  --stage-line: #2A2A25;
+  --stage-ink: #F1EFE9;
+  --stage-ink-2: #A19D92;
+}
+
+/* Tabular numerals for prices and scores */
+.tnum {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marker stroke behind text */
+.marker-stroke {
+  box-shadow: inset 0 -0.48em 0 0 #FFE27A;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.marker-stroke-active {
+  background-color: #FFE27A;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Hairline borders */
+.border-hairline {
+  border-width: 1px;
+  border-color: #E4E0D7;
+}
+
+/* Focus styles matching P2 spec: 2px Ink with 2px Paper offset */
+*:focus-visible {
+  outline: 2px solid #14130F;
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #ECE9E2;
+}
+::-webkit-scrollbar-thumb {
+  background: #CFCABD;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A19D92;
+}
+
+/* Continuous Waterfall Cascade & Return animations */
+@keyframes waterfallDown {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0%, 0);
+  }
+}
+
+@keyframes waterfallUp {
+  0% {
+    transform: translate3d(0, 0%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+.animate-waterfall-down {
+  animation: waterfallDown var(--waterfall-speed, 55s) linear infinite;
+  will-change: transform;
+}
+
+.animate-waterfall-up {
+  animation: waterfallUp var(--waterfall-speed, 55s) linear infinite;
+  will-change: transform;
+}
+
+.waterfall-paused,
+.group\/col-left:hover .animate-waterfall-down,
+.group\/col-right:hover .animate-waterfall-up {
+  animation-play-state: paused !important;
 }
