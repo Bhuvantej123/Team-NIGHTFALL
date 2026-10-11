@@ -4,6 +4,15 @@ Flask application factory.
 P1 owns all changes.
 """
 
+import sys
+from pathlib import Path
+
+# Ensure repository root is on sys.path so 'backend.*' absolute imports resolve
+# even when executed with Root Directory set to 'backend' (e.g., Render Web Service).
+_repo_root = str(Path(__file__).resolve().parent.parent)
+if _repo_root not in sys.path:
+    sys.path.insert(0, _repo_root)
+
 import logging
 from flask import Flask
 from flask_cors import CORS

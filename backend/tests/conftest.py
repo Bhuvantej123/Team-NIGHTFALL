@@ -5,6 +5,13 @@ P1 (and P4 for test authoring) use these fixtures.
 """
 
 import os
+import sys
+from pathlib import Path
+
+# Guarantee repository root is on sys.path for direct pytest invocation
+_repo_root = str(Path(__file__).resolve().parent.parent.parent)
+if _repo_root not in sys.path:
+    sys.path.insert(0, _repo_root)
 
 # Guarantee tests run strictly in-memory and NEVER connect to or pollute external databases
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
